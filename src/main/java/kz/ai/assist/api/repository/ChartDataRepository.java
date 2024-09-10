@@ -5,7 +5,9 @@ import kz.ai.assist.api.record.NgxChartData;
 import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.ChartDataRecord;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -90,5 +92,16 @@ public class ChartDataRepository {
                 .fetch().stream().map(item -> NgxChartData.to(item))
                 .collect(Collectors.toUnmodifiableList());
 
+    }
+
+
+    public BigDecimal findSumByOrganizationAndCode(Long organizationId, String code) {
+        System.out.println(organizationId + "-"+code);
+        return this.dsl
+                .select(DSL.sum(CHART_DATA.AMOUNT_))
+                .from(CHART_DATA)
+                .where(CHART_DATA.ORGANIZATION_.eq(organizationId))
+                .and(CHART_DATA.CODE_.eq(code))
+                .fetchSingle().value1();
     }
 }
