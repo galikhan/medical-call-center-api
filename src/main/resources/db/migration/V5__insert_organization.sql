@@ -1,0 +1,1 @@
+insert into organization(bin_, name_) values('200240011727', 'Aspan software');

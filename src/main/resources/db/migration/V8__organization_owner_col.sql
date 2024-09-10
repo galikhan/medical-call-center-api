@@ -1,0 +1,1 @@
+alter table organization add column owner_ bigint references ai_assist_user(id_);

@@ -1,0 +1,1 @@
+alter table chart_data alter column when_ type date;

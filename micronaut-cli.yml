@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: ai.assist.api
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [app-name, flyway, gradle, h2, http-client-test, java, java-application, jdbc-hikari, jooq, junit, logback, micronaut-aot, micronaut-build, micronaut-http-validation, netty-server, readme, serialization-jackson, shade, static-resources, yaml, yaml-build]

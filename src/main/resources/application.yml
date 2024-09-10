@@ -1,0 +1,24 @@
+micronaut:
+  application:
+    name: ai-assist-api
+    port: 8080
+    max-request-size: '10MB'
+    multipart:
+      max-file-size: '10MB'
+    cors:
+      enabled: true
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+
+datasources:
+  default:
+    db-type: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ai_assist?preparedStatementCacheQueries=0
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    dialect: POSTGRES
