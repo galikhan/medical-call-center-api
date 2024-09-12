@@ -1,12 +1,41 @@
 micronaut:
   application:
     name: ai-assist-api
+  server:
     port: 8080
     max-request-size: '10MB'
     multipart:
       max-file-size: '10MB'
     cors:
       enabled: true
+
+  router:
+    static-resources:
+      main:
+        paths: classpath:views
+        mapping: /main/**
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+    intercept-url-map:
+      - pattern: "/api/**"
+        httpMethods: [ GET, POST, PUT, DELETE ]
+
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: pGQBb6zEGh/RUcAYPDNbiopn0polsyfCy3C9RmdiXMAY/p0aNSQRlsszywVVSnz2
+      generator:
+        access-token:
+          expiration: 172800 #2 days
+
 
 flyway:
   datasources:
@@ -22,3 +51,5 @@ datasources:
     username: postgres
     password: postgres
     dialect: POSTGRES
+
+

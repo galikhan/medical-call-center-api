@@ -89,6 +89,7 @@ public class ChartDataRepository {
                 .where(CHART_DATA.ORGANIZATION_.eq(organizationId))
                 .and(CHART_DATA.CODE_.eq(code))
                 .and(CHART_DATA.WHEN_.between(start, end))
+                .orderBy(CHART_DATA.WHEN_)
                 .fetch().stream().map(item -> NgxChartData.to(item))
                 .collect(Collectors.toUnmodifiableList());
 
@@ -96,7 +97,6 @@ public class ChartDataRepository {
 
 
     public BigDecimal findSumByOrganizationAndCode(Long organizationId, String code) {
-        System.out.println(organizationId + "-"+code);
         return this.dsl
                 .select(DSL.sum(CHART_DATA.AMOUNT_))
                 .from(CHART_DATA)

@@ -24,6 +24,9 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jooq")
     implementation("org.flywaydb:flyway-database-postgresql")
 
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.yaml:snakeyaml")

@@ -6,6 +6,8 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Put;
 import io.micronaut.http.server.cors.CrossOrigin;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import kz.ai.assist.api.record.Organization;
 import kz.ai.assist.api.repository.OrganizationRepository;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/organization")
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class OrganizationController {
 
     private OrganizationRepository organizationRepository;

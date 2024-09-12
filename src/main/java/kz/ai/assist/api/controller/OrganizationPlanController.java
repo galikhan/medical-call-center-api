@@ -6,6 +6,8 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Put;
 import io.micronaut.http.server.cors.CrossOrigin;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import kz.ai.assist.api.record.OrganizationPlan;
 import kz.ai.assist.api.repository.OrganizationPlanRepository;
 import kz.ai.assist.api.service.OrganizationPlanService;
@@ -18,6 +20,7 @@ import java.util.Map;
 
 @CrossOrigin
 @Controller("/api/v1/organization-plan")
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class OrganizationPlanController {
 
     private OrganizationPlanRepository organizationPlanRepository;

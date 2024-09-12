@@ -8,4 +8,8 @@ public record MetricsCategory(Long id, String type, String code, String name, Lo
     public static MetricsCategory to(MetricsCategoryRecord record) {
         return new MetricsCategory(record.getId_(), record.getCode_(), record.getCode_(), record.getName_(), record.getParent_());
     }
+
+    public static MetricsCategory empty() {
+        return new MetricsCategory(null, null, null, null, null);
+    }
 }

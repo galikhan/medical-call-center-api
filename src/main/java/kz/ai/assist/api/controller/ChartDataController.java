@@ -1,5 +1,7 @@
 package kz.ai.assist.api.controller;
 
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import kz.ai.assist.api.record.ChartData;
 import kz.ai.assist.api.record.NgxChartData;
 import kz.ai.assist.api.record.consume.ConsumeChartData;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/chart-data")
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class ChartDataController {
 
     private Logger log = LoggerFactory.getLogger(ChartDataController.class);
