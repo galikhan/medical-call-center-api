@@ -15,12 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
 @Controller("/api/v1/organization-plan")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class OrganizationPlanController {
 
     private OrganizationPlanRepository organizationPlanRepository;
@@ -33,8 +34,9 @@ public class OrganizationPlanController {
     }
 
     @Post
-    public OrganizationPlan create(@Body OrganizationPlan org) {
+    public OrganizationPlan create(Principal principal, @Body OrganizationPlan org) {
         Long owner = 1l;
+        log.info("principal {}", principal);
         return organizationPlanRepository.create(org, owner);
     }
 
