@@ -21,7 +21,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/chart-data")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class ChartDataController {
 
     private Logger log = LoggerFactory.getLogger(ChartDataController.class);

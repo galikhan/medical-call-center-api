@@ -12,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/metrics-category")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class MetricsCategoryController {
 
     private MetricsCategoryRepository metricsCategoryRepository;
