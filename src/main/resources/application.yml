@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: ai-assist-api
+    name: vostok-shop-survey-api
   server:
     port: 8080
     max-request-size: '10MB'
@@ -46,7 +46,7 @@ datasources:
   default:
     db-type: postgres
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ai_assist?preparedStatementCacheQueries=0
+    url: jdbc:postgresql://localhost:5432/vostok_shop_survey?preparedStatementCacheQueries=0
     driverClassName: org.postgresql.Driver
     username: postgres
     password: postgres

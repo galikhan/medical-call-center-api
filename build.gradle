@@ -9,7 +9,7 @@ plugins {
 }
 
 version = "0.1"
-group = "ai.assist.api"
+group = "vostok.shop.survey.api"
 
 repositories {
     mavenCentral()
@@ -39,7 +39,7 @@ dependencies {
 
 
 application {
-    mainClass = "kz.ai.assist.api.Application"
+    mainClass = "kz.vostok.shop.survey.api.Application"
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
@@ -53,7 +53,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("kz.ai.assist.api.*")
+        annotations("kz.vostok.shop.survey.api.*")
     }
     aot {
     // Please review carefully the optimizations enabled below
@@ -78,7 +78,7 @@ configurations {
 
 flyway {
     configurations = ['flywayMigration']
-    url = 'jdbc:postgresql://localhost:5432/ai_assist'
+    url = 'jdbc:postgresql://localhost:5432/vostok_shop_survey'
     user = 'postgres'
     password = 'postgres'
 }
