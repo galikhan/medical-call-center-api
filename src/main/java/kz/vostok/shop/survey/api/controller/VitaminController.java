@@ -10,6 +10,7 @@ import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.vostok.shop.survey.api.record.Vitamin;
+import kz.vostok.shop.survey.api.record.page.VitaminPage;
 import kz.vostok.shop.survey.api.repository.VitaminRepository;
 import kz.vostok.shop.survey.api.service.VitaminService;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class VitaminController {
     }
 
     @Get("/page/{page}/size/{size}")
-    public List<Vitamin> page(Integer page, Integer size) {
+    public VitaminPage page(Integer page, Integer size) {
         return vitaminService.page(page, size, null);
     }
 

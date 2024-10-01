@@ -91,6 +91,11 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
         return 0;
     }
 
+    @Override
+    public int total() {
+        return this.dsl.selectCount().from(PARTICIPANT).fetchSingle().value1();
+    }
+
     public List<Participant> page(int limit, int offset) {
         return this.dsl
                 .selectFrom(PARTICIPANT)

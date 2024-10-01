@@ -34,7 +34,7 @@ micronaut:
               secret: pGQBb6zEGh/RUcAYPDNbiopn0polsyfCy3C9RmdiXMAY/p0aNSQRlsszywVVSnz2
       generator:
         access-token:
-          expiration: 172800 #2 days
+          expiration: 172800*2 #2 days
 
 
 flyway:

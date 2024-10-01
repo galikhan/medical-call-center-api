@@ -121,6 +121,13 @@ public class VitaminConfigRepository implements AbstractRepository<VitaminConfig
                 .where(VITAMIN_CONFIG.ID_.eq(id)).execute();
     }
 
+    @Override
+    public int total() {
+        return this.dsl.selectCount().from(VITAMIN_CONFIG)
+                .where(VITAMIN_CONFIG.IS_REMOVED_.eq(false))
+                .fetchSingle().value1();
+    }
+
     public List<VitaminConfig> page(int limit, int offset) {
         return this.dsl
                 .selectFrom(VITAMIN_CONFIG)

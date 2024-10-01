@@ -11,6 +11,7 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.vostok.shop.survey.api.record.Participant;
 import kz.vostok.shop.survey.api.record.Question;
+import kz.vostok.shop.survey.api.record.page.ParticipantPage;
 import kz.vostok.shop.survey.api.repository.AnswerRepository;
 import kz.vostok.shop.survey.api.repository.ParticipantRepository;
 import kz.vostok.shop.survey.api.service.ParticipantService;
@@ -49,7 +50,7 @@ public class ParticipantController {
     }
 
     @Get("/page/{page}/size/{size}")
-    public List<Participant> page(Integer page, Integer size) {
+    public ParticipantPage page(Integer page, Integer size) {
         return participantService.page(page, size, null);
     }
 

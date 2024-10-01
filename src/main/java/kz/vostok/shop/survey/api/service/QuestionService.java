@@ -2,12 +2,13 @@ package kz.vostok.shop.survey.api.service;
 
 import jakarta.inject.Singleton;
 import kz.vostok.shop.survey.api.record.Question;
+import kz.vostok.shop.survey.api.record.page.QuestionPage;
 import kz.vostok.shop.survey.api.repository.QuestionRepository;
 
 import java.util.List;
 
 @Singleton
-public class QuestionService implements PaginationService<Question>{
+public class QuestionService implements PaginationService<Question, QuestionPage>{
 
     private QuestionRepository questionRepository;
 
@@ -16,10 +17,12 @@ public class QuestionService implements PaginationService<Question>{
     }
 
     @Override
-    public List<Question> page(int page, int size, Long survey) {
+    public QuestionPage page(int page, int size, Long survey) {
         int offset = (page > 0 ? (page - 1) * size : size);
         var limit = size;
 
-        return this.questionRepository.page(limit, offset, survey);
+        var data = this.questionRepository.page(limit, offset, survey);
+        var total = this.questionRepository.total();
+        return new QuestionPage(total, data);
     }
 }

@@ -10,6 +10,7 @@ import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.vostok.shop.survey.api.record.Question;
+import kz.vostok.shop.survey.api.record.page.QuestionPage;
 import kz.vostok.shop.survey.api.repository.QuestionRepository;
 import kz.vostok.shop.survey.api.service.QuestionService;
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class QuestionController {
     }
 
     @Get("/page/{page}/size/{size}")
-    public List<Question> page(Long survey, Integer page, Integer size) {
+    public QuestionPage page(Long survey, Integer page, Integer size) {
         return questionService.page(page, size, survey);
     }
 

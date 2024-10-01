@@ -2,20 +2,21 @@ package kz.vostok.shop.survey.api.service;
 
 import jakarta.inject.Singleton;
 import kz.vostok.shop.survey.api.record.Participant;
+import kz.vostok.shop.survey.api.record.page.ParticipantPage;
 import kz.vostok.shop.survey.api.repository.ParticipantRepository;
 
-import java.util.List;
-
 @Singleton
-public class ParticipantService implements PaginationService<Participant>{
+public class ParticipantService implements PaginationService<Participant, ParticipantPage> {
 
     private ParticipantRepository participantRepository;
 
     @Override
-    public List<Participant> page(int page, int size, Long reference) {
+    public ParticipantPage page(int page, int size, Long reference) {
         int offset = (page > 0 ? (page - 1) * size : size);
         var limit = size;
 
-        return participantRepository.page(limit, offset);
+        var total = participantRepository.total();
+        var data = participantRepository.page(limit, offset);
+        return new ParticipantPage(total, data);
     }
 }

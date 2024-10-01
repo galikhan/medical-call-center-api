@@ -10,6 +10,7 @@ import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.vostok.shop.survey.api.record.Survey;
+import kz.vostok.shop.survey.api.record.page.SurveyPage;
 import kz.vostok.shop.survey.api.repository.SurveyRepository;
 import kz.vostok.shop.survey.api.service.SurveyService;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class SurveyController {
     }
 
     @Get("/page/{page}/size/{size}")
-    public List<Survey> findActiveSurvey(Integer page, Integer size) {
+    public SurveyPage findActiveSurvey(Integer page, Integer size) {
         return surveyService.page(page, size, null);
     }
 

@@ -17,4 +17,5 @@ public interface AbstractRepository<T, R> {
     Optional<R> findRecordById(Long id);
     T findById(Long id);
     int remove(Long id);
+    int total();
 }

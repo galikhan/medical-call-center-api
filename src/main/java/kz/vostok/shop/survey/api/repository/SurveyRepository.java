@@ -13,7 +13,7 @@ import static kz.jooq.model.tables.Survey.SURVEY;
 import static org.jooq.Records.mapping;
 
 @Singleton
-public class SurveyRepository {
+public class SurveyRepository implements AbstractRepository<Survey, SurveyRecord>{
 
     private DSLContext dsl;
 
@@ -84,6 +84,13 @@ public class SurveyRepository {
         return this.dsl.update(SURVEY)
                 .set(SURVEY.IS_REMOVED_, true)
                 .where(SURVEY.ID_.eq(id)).execute();
+    }
+
+    @Override
+    public int total() {
+        return this.dsl
+                .selectCount().from(SURVEY).where(SURVEY.IS_REMOVED_.eq(false))
+                .fetchSingle().value1();
     }
 
     public List<Survey> page(int limit, int offset) {

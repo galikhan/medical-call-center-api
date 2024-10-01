@@ -89,4 +89,9 @@ public class VitaminConfigExtraRepository implements AbstractRepository<VitaminC
                 .set(VITAMIN_CONFIG_EXTRA.IS_REMOVED_, true)
                 .where(VITAMIN_CONFIG_EXTRA.ID_.eq(id)).execute();
     }
+
+    @Override
+    public int total() {
+        return 0;
+    }
 }

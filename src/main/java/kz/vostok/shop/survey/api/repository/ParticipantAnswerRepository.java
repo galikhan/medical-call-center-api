@@ -83,4 +83,9 @@ public class ParticipantAnswerRepository implements AbstractRepository<Participa
     public int remove(Long id) {
         return 0;
     }
+
+    @Override
+    public int total() {
+        return 0;
+    }
 }

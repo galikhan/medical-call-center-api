@@ -78,6 +78,15 @@ public class VitaminRepository implements AbstractRepository<Vitamin, VitaminRec
                 .where(VITAMIN.ID_.eq(id)).execute();
     }
 
+    @Override
+    public int total() {
+        return this.dsl.selectCount().from(VITAMIN)
+                .where(VITAMIN.IS_REMOVED_.eq(false))
+                .fetchSingle()
+                .value1();
+
+    }
+
     public List<Vitamin> page(int limit, int offset) {
         return this.dsl
                 .selectFrom(VITAMIN)
