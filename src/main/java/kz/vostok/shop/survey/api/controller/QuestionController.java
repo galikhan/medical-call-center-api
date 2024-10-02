@@ -33,23 +33,23 @@ public class QuestionController {
     }
 
     @Post
-    public Question create(@Body Question survey) {
-        return questionRepository.create(survey);
+    public Question create(Long survey, @Body Question question) {
+        return questionRepository.create(question);
     }
 
     @Put
-    public Question update(@Body Question survey) {
-        return questionRepository.update(survey);
+    public Question update(Long survey, @Body Question question) {
+        return questionRepository.update(question);
     }
 
     @Get("/{id}")
-    public Question findById(Long id) {
+    public Question findById(Long survey, Long id) {
         return questionRepository.findById(id);
     }
 
     @Get("/all")
-    public List<Question> findAllBySurvey(Long id) {
-        return questionRepository.findAllBySurvey(id);
+    public List<Question> findAllBySurvey(Long survey) {
+        return questionRepository.findAllBySurvey(survey);
     }
 
     @Get("/page/{page}/size/{size}")

@@ -10,6 +10,7 @@ import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.vostok.shop.survey.api.record.Vitamin;
+import kz.vostok.shop.survey.api.record.VitaminCategory;
 import kz.vostok.shop.survey.api.record.page.VitaminPage;
 import kz.vostok.shop.survey.api.repository.VitaminRepository;
 import kz.vostok.shop.survey.api.service.VitaminService;
@@ -51,6 +52,13 @@ public class VitaminController {
     public VitaminPage page(Integer page, Integer size) {
         return vitaminService.page(page, size, null);
     }
+
+    @Get("/category")
+    public List<VitaminCategory> category() {
+        log.info("caregory {}", vitaminRepository.findCategory());
+        return vitaminRepository.findCategory();
+    }
+
 
     @Delete("/{id}")
     public int remove(Long id) {

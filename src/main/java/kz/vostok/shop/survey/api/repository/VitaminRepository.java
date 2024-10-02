@@ -3,6 +3,7 @@ package kz.vostok.shop.survey.api.repository;
 import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.VitaminRecord;
 import kz.vostok.shop.survey.api.record.Vitamin;
+import kz.vostok.shop.survey.api.record.VitaminCategory;
 import org.jooq.DSLContext;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static kz.jooq.model.tables.Vitamin.VITAMIN;
+import static kz.jooq.model.tables.VitaminCategory.VITAMIN_CATEGORY;
 import static org.jooq.Records.mapping;
 
 @Singleton
@@ -95,6 +97,15 @@ public class VitaminRepository implements AbstractRepository<Vitamin, VitaminRec
                 .limit(limit).offset(offset)
                 .stream()
                 .map(Vitamin::to)
+                .collect(Collectors.toList());
+    }
+
+    public List<VitaminCategory> findCategory() {
+        return this.dsl
+                .selectFrom(VITAMIN_CATEGORY)
+                .orderBy(VITAMIN_CATEGORY.ID_)
+                .stream()
+                .map(VitaminCategory::to)
                 .collect(Collectors.toList());
     }
 }
