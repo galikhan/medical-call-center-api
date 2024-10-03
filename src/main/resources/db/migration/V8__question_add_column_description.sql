@@ -1,0 +1,1 @@
+alter table question add column description_ text;

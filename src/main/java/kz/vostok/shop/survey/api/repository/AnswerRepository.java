@@ -1,5 +1,6 @@
 package kz.vostok.shop.survey.api.repository;
 
+import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.AnswerRecord;
 import kz.jooq.model.tables.records.QuestionRecord;
 import kz.vostok.shop.survey.api.record.Answer;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 import static kz.jooq.model.tables.Answer.ANSWER;
 import static org.jooq.Records.mapping;
 
+@Singleton
 public class AnswerRepository {
 
     private DSLContext dsl;

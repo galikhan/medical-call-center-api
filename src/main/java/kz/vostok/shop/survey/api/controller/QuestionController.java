@@ -10,6 +10,7 @@ import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.vostok.shop.survey.api.record.Question;
+import kz.vostok.shop.survey.api.record.client.SurveyQuestion;
 import kz.vostok.shop.survey.api.record.page.QuestionPage;
 import kz.vostok.shop.survey.api.repository.QuestionRepository;
 import kz.vostok.shop.survey.api.service.QuestionService;
@@ -60,6 +61,21 @@ public class QuestionController {
     @Delete("/{id}")
     public int remove(Long id) {
         return questionRepository.remove(id);
+    }
+
+    @Get("/{id}/next")
+    public SurveyQuestion next(Long survey, Long id) {
+        return questionService.next(survey, id);
+    }
+
+    @Get("/{id}/prev")
+    public SurveyQuestion prev(Long survey, Long id) {
+        return questionService.prev(survey, id);
+    }
+
+    @Get("/load-first")
+    public SurveyQuestion loadFirst(Long survey) {
+        return questionService.loadFirst(survey);
     }
 
 

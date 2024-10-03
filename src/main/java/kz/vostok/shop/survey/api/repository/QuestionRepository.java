@@ -27,6 +27,7 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                 .set(QUESTION.NAME_, question.name())
                 .set(QUESTION.SURVEY_, question.survey())
                 .set(QUESTION.TYPE_, question.type())
+                .set(QUESTION.DESCRIPTION_, question.description())
                 .returningResult(
                         QUESTION.ID_,
                         QUESTION.NAME_,
@@ -34,7 +35,8 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                         QUESTION.TYPE_,
                         QUESTION.PREV_QUESTION_,
                         QUESTION.NEXT_QUESTION_,
-                        QUESTION.IS_REMOVED_
+                        QUESTION.IS_REMOVED_,
+                        QUESTION.DESCRIPTION_
                 ).fetchOne(mapping(Question::new));
     }
 
@@ -47,6 +49,7 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                 .set(QUESTION.PREV_QUESTION_, question.prevQuestion())
                 .set(QUESTION.NEXT_QUESTION_, question.nextQuestion())
                 .set(QUESTION.IS_REMOVED_, question.isRemoved())
+                .set(QUESTION.DESCRIPTION_, question.description())
                 .where(QUESTION.ID_.eq(question.id()))
                 .returningResult(
                         QUESTION.ID_,
@@ -55,7 +58,8 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                         QUESTION.TYPE_,
                         QUESTION.PREV_QUESTION_,
                         QUESTION.NEXT_QUESTION_,
-                        QUESTION.IS_REMOVED_
+                        QUESTION.IS_REMOVED_,
+                        QUESTION.DESCRIPTION_
                 ).fetchOne(mapping(Question::new));
     }
 
@@ -68,6 +72,7 @@ public class QuestionRepository implements AbstractRepository<Question, Question
         return this.dsl.selectFrom(QUESTION)
                 .where(QUESTION.IS_REMOVED_.eq(false))
                 .and(QUESTION.SURVEY_.eq(survey))
+                .orderBy(QUESTION.ID_)
                 .fetch()
                 .stream().map(Question::to)
                 .collect(Collectors.toUnmodifiableList());
@@ -104,7 +109,7 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                 .selectFrom(QUESTION)
                 .where(QUESTION.IS_REMOVED_.eq(false))
                 .and(QUESTION.SURVEY_.eq(survey))
-                .orderBy(QUESTION.ID_.desc())
+                .orderBy(QUESTION.ID_)
                 .limit(limit).offset(offset)
                 .stream()
                 .map(Question::to)
@@ -112,4 +117,54 @@ public class QuestionRepository implements AbstractRepository<Question, Question
     }
 
 
+    public Optional<QuestionRecord> next(Long survey, Long id) {
+        return this.dsl
+                .selectFrom(QUESTION)
+                .where(QUESTION.IS_REMOVED_.eq(false))
+                .and(QUESTION.SURVEY_.eq(survey))
+                .and(QUESTION.ID_.gt(id))
+                .orderBy(QUESTION.ID_)
+                .limit(1)
+                .fetchOptional();
+    }
+
+    public Optional<QuestionRecord> prev(Long survey, Long id) {
+        return this.dsl
+                .selectFrom(QUESTION)
+                .where(QUESTION.IS_REMOVED_.eq(false))
+                .and(QUESTION.SURVEY_.eq(survey))
+                .and(QUESTION.ID_.lt(id))
+                .orderBy(QUESTION.ID_.desc())
+                .limit(1)
+                .fetchOptional();
+    }
+
+    public  Optional<QuestionRecord> loadFirst(Long survey) {
+        return this.dsl
+                .selectFrom(QUESTION)
+                .where(QUESTION.IS_REMOVED_.eq(false))
+                .and(QUESTION.SURVEY_.eq(survey))
+                .orderBy(QUESTION.ID_)
+                .limit(1)
+                .fetchOptional();
+    }
+
+    public Integer total(Long survey) {
+        return this.dsl.selectCount()
+                .from(QUESTION)
+                .where(QUESTION.IS_REMOVED_.eq(false))
+                .and(QUESTION.SURVEY_.eq(survey))
+                .fetchSingle().value1();
+
+    }
+
+    public Integer countLeftAmount(Long survey, Long id) {
+        return this.dsl
+                .selectCount()
+                .from(QUESTION)
+                .where(QUESTION.IS_REMOVED_.eq(false))
+                .and(QUESTION.SURVEY_.eq(survey))
+                .and(QUESTION.ID_.ge(id))
+                .fetchSingle().value1();
+    }
 }

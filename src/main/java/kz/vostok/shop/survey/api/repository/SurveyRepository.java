@@ -65,7 +65,10 @@ public class SurveyRepository implements AbstractRepository<Survey, SurveyRecord
     public Optional<SurveyRecord> findActive() {
         return this.dsl
                 .selectFrom(SURVEY).where(SURVEY.IS_ACTIVE_.eq(true))
-                .fetch().stream().findFirst();
+                .and(SURVEY.IS_REMOVED_.eq(false))
+                .fetch()
+                .stream()
+                .findFirst();
     }
     
     public Optional<SurveyRecord> findRecordById(Long id) {
