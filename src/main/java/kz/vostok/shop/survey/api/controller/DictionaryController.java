@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/dictionary")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class DictionaryController {
 
     private Logger log = LoggerFactory.getLogger(DictionaryController.class);

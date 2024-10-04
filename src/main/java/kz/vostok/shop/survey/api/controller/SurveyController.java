@@ -20,7 +20,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/survey")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class SurveyController {
 
     private Logger log = LoggerFactory.getLogger(SurveyController.class);

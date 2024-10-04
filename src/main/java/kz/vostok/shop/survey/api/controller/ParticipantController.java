@@ -22,7 +22,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/participant")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class ParticipantController {
 
     private Logger log = LoggerFactory.getLogger(ParticipantController.class);

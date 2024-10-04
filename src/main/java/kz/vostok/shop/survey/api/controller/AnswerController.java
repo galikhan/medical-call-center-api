@@ -21,7 +21,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/answer")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class AnswerController {
 
     private Logger log = LoggerFactory.getLogger(AnswerController.class);
