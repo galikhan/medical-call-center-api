@@ -28,6 +28,7 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                 .set(QUESTION.SURVEY_, question.survey())
                 .set(QUESTION.TYPE_, question.type())
                 .set(QUESTION.DESCRIPTION_, question.description())
+                .set(QUESTION.CATEGORY_, question.category())
                 .returningResult(
                         QUESTION.ID_,
                         QUESTION.NAME_,
@@ -36,7 +37,8 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                         QUESTION.PREV_QUESTION_,
                         QUESTION.NEXT_QUESTION_,
                         QUESTION.IS_REMOVED_,
-                        QUESTION.DESCRIPTION_
+                        QUESTION.DESCRIPTION_,
+                        QUESTION.CATEGORY_
                 ).fetchOne(mapping(Question::new));
     }
 
@@ -49,6 +51,7 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                 .set(QUESTION.PREV_QUESTION_, question.prevQuestion())
                 .set(QUESTION.NEXT_QUESTION_, question.nextQuestion())
                 .set(QUESTION.IS_REMOVED_, question.isRemoved())
+                .set(QUESTION.CATEGORY_, question.category())
                 .set(QUESTION.DESCRIPTION_, question.description())
                 .where(QUESTION.ID_.eq(question.id()))
                 .returningResult(
@@ -59,7 +62,8 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                         QUESTION.PREV_QUESTION_,
                         QUESTION.NEXT_QUESTION_,
                         QUESTION.IS_REMOVED_,
-                        QUESTION.DESCRIPTION_
+                        QUESTION.DESCRIPTION_,
+                        QUESTION.CATEGORY_
                 ).fetchOne(mapping(Question::new));
     }
 

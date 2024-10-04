@@ -1,10 +1,12 @@
 package kz.vostok.shop.survey.api.service;
 
 import jakarta.inject.Singleton;
+import kz.vostok.shop.survey.api.record.Dictionary;
 import kz.vostok.shop.survey.api.record.Question;
 import kz.vostok.shop.survey.api.record.client.SurveyQuestion;
 import kz.vostok.shop.survey.api.record.page.QuestionPage;
 import kz.vostok.shop.survey.api.repository.AnswerRepository;
+import kz.vostok.shop.survey.api.repository.DictionaryRepository;
 import kz.vostok.shop.survey.api.repository.QuestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +17,12 @@ public class QuestionService implements PaginationService<Question, QuestionPage
     private static final Logger log = LoggerFactory.getLogger(QuestionService.class);
     private QuestionRepository questionRepository;
     private AnswerRepository answerRepository;
+    private DictionaryRepository dictionaryRepository;
 
-    public QuestionService(QuestionRepository questionRepository, AnswerRepository answerRepository) {
+    public QuestionService(QuestionRepository questionRepository, AnswerRepository answerRepository, DictionaryRepository dictionaryRepository) {
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
+        this.dictionaryRepository = dictionaryRepository;
     }
 
     @Override
@@ -39,7 +43,11 @@ public class QuestionService implements PaginationService<Question, QuestionPage
             var question = optional.get();
             var answers = this.answerRepository.findAllByQuestion(question.getId_());
             var amount = this.questionRepository.countLeftAmount(survey, question.getId_());
-            return new SurveyQuestion(Question.to(question), answers, calcProgress(total, amount));
+            Dictionary category = null;
+            if(question.getCategory_() != null)  {
+                category = this.dictionaryRepository.findById(question.getCategory_());
+            }
+            return new SurveyQuestion(Question.to(question), answers, calcProgress(total, amount), category);
         } else {
             return SurveyQuestion.empty();
         }
@@ -53,7 +61,12 @@ public class QuestionService implements PaginationService<Question, QuestionPage
             var question = optional.get();
             var answers = this.answerRepository.findAllByQuestion(question.getId_());
             var amount = this.questionRepository.countLeftAmount(survey, question.getId_());
-            return new SurveyQuestion(Question.to(question), answers, calcProgress(total, amount));
+            Dictionary category = null;
+            if(question.getCategory_() != null)  {
+                category = this.dictionaryRepository.findById(question.getCategory_());
+            }
+
+            return new SurveyQuestion(Question.to(question), answers, calcProgress(total, amount), category);
         } else {
             return SurveyQuestion.empty();
         }
@@ -72,7 +85,12 @@ public class QuestionService implements PaginationService<Question, QuestionPage
             var question = optional.get();
             var answers = this.answerRepository.findAllByQuestion(question.getId_());
             var amount = this.questionRepository.countLeftAmount(survey, question.getId_());
-            return new SurveyQuestion(Question.to(question), answers, calcProgress(total, amount));
+            Dictionary category = null;
+            if(question.getCategory_() != null)  {
+                category = this.dictionaryRepository.findById(question.getCategory_());
+            }
+
+            return new SurveyQuestion(Question.to(question), answers, calcProgress(total, amount), category);
         } else {
             return SurveyQuestion.empty();
         }
