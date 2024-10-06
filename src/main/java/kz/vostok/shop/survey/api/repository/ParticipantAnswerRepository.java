@@ -29,30 +29,42 @@ public class ParticipantAnswerRepository implements AbstractRepository<Participa
                 .set(PARTICIPANT_ANSWER.QUESTION_, answer.question())
                 .set(PARTICIPANT_ANSWER.ANSWER_, answer.answer())
                 .set(PARTICIPANT_ANSWER.PARTICIPANT_, answer.participant())
+                .set(PARTICIPANT_ANSWER.ANSWERS_, answer.answers())
+                .set(PARTICIPANT_ANSWER.VALUE_, answer.value())
                 .returningResult(
                         PARTICIPANT_ANSWER.ID_,
                         PARTICIPANT_ANSWER.PARTICIPANT_,
                         PARTICIPANT_ANSWER.SURVEY_,
                         PARTICIPANT_ANSWER.QUESTION_,
-                        PARTICIPANT_ANSWER.ANSWER_
+                        PARTICIPANT_ANSWER.ANSWER_,
+                        PARTICIPANT_ANSWER.ANSWERS_,
+                        PARTICIPANT_ANSWER.VALUE_
                 ).fetchOne(mapping(ParticipantAnswer::new));
     }
 
-    @Override
     public ParticipantAnswer update(ParticipantAnswer answer) {
+        return update(null, answer);
+    }
+
+    public ParticipantAnswer update(Long id, ParticipantAnswer answer) {
+        var answerId = id != null ? id : answer.id();
         return this.dsl
                 .update(PARTICIPANT_ANSWER)
                 .set(PARTICIPANT_ANSWER.SURVEY_, answer.survey())
                 .set(PARTICIPANT_ANSWER.QUESTION_, answer.question())
                 .set(PARTICIPANT_ANSWER.ANSWER_, answer.answer())
                 .set(PARTICIPANT_ANSWER.PARTICIPANT_, answer.participant())
-                .where(PARTICIPANT_ANSWER.ID_.eq(answer.id()))
+                .set(PARTICIPANT_ANSWER.ANSWERS_, answer.answers())
+                .set(PARTICIPANT_ANSWER.VALUE_, answer.value())
+                .where(PARTICIPANT_ANSWER.ID_.eq(answerId))
                 .returningResult(
                         PARTICIPANT_ANSWER.ID_,
                         PARTICIPANT_ANSWER.PARTICIPANT_,
                         PARTICIPANT_ANSWER.SURVEY_,
                         PARTICIPANT_ANSWER.QUESTION_,
-                        PARTICIPANT_ANSWER.ANSWER_
+                        PARTICIPANT_ANSWER.ANSWER_,
+                        PARTICIPANT_ANSWER.ANSWERS_,
+                        PARTICIPANT_ANSWER.VALUE_
                 ).fetchOne(mapping(ParticipantAnswer::new));
     }
 
@@ -88,4 +100,14 @@ public class ParticipantAnswerRepository implements AbstractRepository<Participa
     public int total() {
         return 0;
     }
+
+    public Optional<ParticipantAnswerRecord> findByParams(Long participant, Long survey, Long question) {
+        return this.dsl.selectFrom(PARTICIPANT_ANSWER)
+                .where(PARTICIPANT_ANSWER.PARTICIPANT_.eq(participant))
+                .and(PARTICIPANT_ANSWER.SURVEY_.eq(survey))
+                .and(PARTICIPANT_ANSWER.QUESTION_.eq(question))
+                .fetchOptional();
+
+    }
+
 }
