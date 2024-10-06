@@ -36,7 +36,8 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
                         PARTICIPANT.GENDER_,
                         PARTICIPANT.AIM_,
                         PARTICIPANT.CITY_,
-                        PARTICIPANT.ALLERGY_
+                        PARTICIPANT.ALLERGY_,
+                        PARTICIPANT.CREATED_
                 ).fetchOne(mapping(Participant::new));
     }
 
@@ -64,7 +65,8 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
                         PARTICIPANT.GENDER_,
                         PARTICIPANT.AIM_,
                         PARTICIPANT.CITY_,
-                        PARTICIPANT.ALLERGY_
+                        PARTICIPANT.ALLERGY_,
+                        PARTICIPANT.CREATED_
                 ).fetchOne(mapping(Participant::new));
     }
 

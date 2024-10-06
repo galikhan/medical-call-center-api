@@ -30,12 +30,14 @@ public class VitaminRepository implements AbstractRepository<Vitamin, VitaminRec
                 .set(VITAMIN.NAME_, vitamin.name())
                 .set(VITAMIN.CATEGORY_, vitamin.category())
                 .set(VITAMIN.DESCRIPTION_, vitamin.description())
+                .set(VITAMIN.LINK_, vitamin.link())
                 .returningResult(
                         VITAMIN.ID_,
                         VITAMIN.CATEGORY_,
                         VITAMIN.NAME_,
                         VITAMIN.DESCRIPTION_,
-                        VITAMIN.IS_REMOVED_
+                        VITAMIN.IS_REMOVED_,
+                        VITAMIN.LINK_
                 ).fetchOne(mapping(Vitamin::new));
     }
 
@@ -47,13 +49,15 @@ public class VitaminRepository implements AbstractRepository<Vitamin, VitaminRec
                 .set(VITAMIN.CATEGORY_, vitamin.category())
                 .set(VITAMIN.DESCRIPTION_, vitamin.description())
                 .set(VITAMIN.IS_REMOVED_, vitamin.isRemoved())
+                .set(VITAMIN.LINK_, vitamin.link())
                 .where(VITAMIN.ID_.eq(vitamin.id()))
                 .returningResult(
                         VITAMIN.ID_,
                         VITAMIN.CATEGORY_,
                         VITAMIN.NAME_,
                         VITAMIN.DESCRIPTION_,
-                        VITAMIN.IS_REMOVED_
+                        VITAMIN.IS_REMOVED_,
+                        VITAMIN.LINK_
                 ).fetchOne(mapping(Vitamin::new));
     }
 

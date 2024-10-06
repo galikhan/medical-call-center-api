@@ -27,6 +27,10 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.reactor:micronaut-reactor")
 
+    implementation("io.micronaut.email:micronaut-email-javamail")
+    implementation("io.micronaut.email:micronaut-email-template")
+    runtimeOnly("org.eclipse.angus:angus-mail")
+
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.yaml:snakeyaml")

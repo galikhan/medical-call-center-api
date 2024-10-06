@@ -53,3 +53,19 @@ datasources:
     dialect: POSTGRES
 
 
+javamail:
+  authentication:
+    username: 'galixan@mail.ru'
+    password: 'b71dwtfm8wuq9Xh7xeV5'
+  properties:
+    mail:
+      smtp:
+        port: 465
+        auth: true
+        starttls:
+          enable: false
+        ssl:
+          enable: true
+          trust: smtp.mail.ru
+        host: smtp.mail.ru
+

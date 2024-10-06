@@ -153,7 +153,7 @@ public class QuestionRepository implements AbstractRepository<Question, Question
                 .fetchOptional();
     }
 
-    public Integer total(Long survey) { 
+    public Integer total(Long survey) {
         return this.dsl.selectCount()
                 .from(QUESTION)
                 .where(QUESTION.IS_REMOVED_.eq(false))

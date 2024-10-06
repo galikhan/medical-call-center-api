@@ -10,6 +10,10 @@ public class ParticipantService implements PaginationService<Participant, Partic
 
     private ParticipantRepository participantRepository;
 
+    public ParticipantService(ParticipantRepository participantRepository) {
+        this.participantRepository = participantRepository;
+    }
+
     @Override
     public ParticipantPage page(int page, int size, Long reference) {
         int offset = (page > 0 ? (page - 1) * size : size);
