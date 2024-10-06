@@ -107,4 +107,12 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
                 .map(Participant::to)
                 .collect(Collectors.toList());
     }
+
+    public int updateEmail(Long id, String email) {
+        return this.dsl
+                .update(PARTICIPANT)
+                .set(PARTICIPANT.EMAIL_, email)
+                .where(PARTICIPANT.ID_.eq(id))
+                .execute();
+    }
 }
