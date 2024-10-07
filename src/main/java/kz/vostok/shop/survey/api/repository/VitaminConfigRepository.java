@@ -142,4 +142,15 @@ public class VitaminConfigRepository implements AbstractRepository<VitaminConfig
                 .map(VitaminConfig::to)
                 .collect(Collectors.toList());
     }
+
+    public List<VitaminConfig> findBySurveyId(Long survey) {
+        return this.dsl
+                .selectFrom(VITAMIN_CONFIG)
+                .where(VITAMIN_CONFIG.SURVEY_.eq(survey))
+                .and(VITAMIN_CONFIG.IS_REMOVED_.eq(false))
+                .fetch().stream().map(VitaminConfig::to)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+
 }
