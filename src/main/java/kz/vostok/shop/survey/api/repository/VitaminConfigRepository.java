@@ -39,6 +39,7 @@ public class VitaminConfigRepository implements AbstractRepository<VitaminConfig
                 .set(VITAMIN_CONFIG.AIM_, config.aim())
                 .set(VITAMIN_CONFIG.ALLERGY_, config.allergy())
                 .set(VITAMIN_CONFIG.VITAMINS_, config.vitamins())
+                .set(VITAMIN_CONFIG.LINK_, config.link())
                 .returningResult(
                         VITAMIN_CONFIG.ID_,
                         VITAMIN_CONFIG.NAME_,
@@ -54,7 +55,8 @@ public class VitaminConfigRepository implements AbstractRepository<VitaminConfig
                         VITAMIN_CONFIG.AIM_,
                         VITAMIN_CONFIG.ALLERGY_,
                         VITAMIN_CONFIG.VITAMINS_,
-                        VITAMIN_CONFIG.IS_REMOVED_
+                        VITAMIN_CONFIG.IS_REMOVED_,
+                        VITAMIN_CONFIG.LINK_
                 ).fetchOne(mapping(VitaminConfig::new));
     }
 
@@ -75,6 +77,7 @@ public class VitaminConfigRepository implements AbstractRepository<VitaminConfig
                 .set(VITAMIN_CONFIG.AIM_, config.aim())
                 .set(VITAMIN_CONFIG.ALLERGY_, config.allergy())
                 .set(VITAMIN_CONFIG.VITAMINS_, config.vitamins())
+                .set(VITAMIN_CONFIG.LINK_, config.link())
                 .where(VITAMIN_CONFIG.ID_.eq(config.id()))
                 .returningResult(
                         VITAMIN_CONFIG.ID_,
@@ -91,7 +94,8 @@ public class VitaminConfigRepository implements AbstractRepository<VitaminConfig
                         VITAMIN_CONFIG.AIM_,
                         VITAMIN_CONFIG.ALLERGY_,
                         VITAMIN_CONFIG.VITAMINS_,
-                        VITAMIN_CONFIG.IS_REMOVED_
+                        VITAMIN_CONFIG.IS_REMOVED_,
+                        VITAMIN_CONFIG.LINK_
                 ).fetchOne(mapping(VitaminConfig::new));
     }
 

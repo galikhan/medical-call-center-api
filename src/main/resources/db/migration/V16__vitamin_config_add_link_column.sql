@@ -1,0 +1,1 @@
+alter table vitamin_config add column link_ varchar(350);

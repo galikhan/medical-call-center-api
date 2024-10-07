@@ -28,12 +28,18 @@ public class VitaminConfigExtraRepository implements AbstractRepository<VitaminC
                 .set(VITAMIN_CONFIG_EXTRA.VITAMIN_CONFIG_, extraConfig.vitaminConfig())
                 .set(VITAMIN_CONFIG_EXTRA.QUESTION_, extraConfig.question())
                 .set(VITAMIN_CONFIG_EXTRA.ANSWER_, extraConfig.answer())
+                .set(VITAMIN_CONFIG_EXTRA.ANSWERS_, extraConfig.answers())
+                .set(VITAMIN_CONFIG_EXTRA.MIN_, extraConfig.min())
+                .set(VITAMIN_CONFIG_EXTRA.MAX_, extraConfig.max())
                 .returningResult(
                         VITAMIN_CONFIG_EXTRA.ID_,
                         VITAMIN_CONFIG_EXTRA.VITAMIN_CONFIG_,
                         VITAMIN_CONFIG_EXTRA.QUESTION_,
                         VITAMIN_CONFIG_EXTRA.ANSWER_,
-                        VITAMIN_CONFIG_EXTRA.IS_REMOVED_
+                        VITAMIN_CONFIG_EXTRA.IS_REMOVED_,
+                        VITAMIN_CONFIG_EXTRA.MIN_,
+                        VITAMIN_CONFIG_EXTRA.MAX_,
+                        VITAMIN_CONFIG_EXTRA.ANSWERS_
                 ).fetchOne(mapping(VitaminConfigExtra::new));
 
     }
@@ -46,13 +52,20 @@ public class VitaminConfigExtraRepository implements AbstractRepository<VitaminC
                 .set(VITAMIN_CONFIG_EXTRA.QUESTION_, extraConfig.question())
                 .set(VITAMIN_CONFIG_EXTRA.ANSWER_, extraConfig.answer())
                 .set(VITAMIN_CONFIG_EXTRA.IS_REMOVED_, extraConfig.isRemoved())
+                .set(VITAMIN_CONFIG_EXTRA.ANSWERS_, extraConfig.answers())
+                .set(VITAMIN_CONFIG_EXTRA.MIN_, extraConfig.min())
+                .set(VITAMIN_CONFIG_EXTRA.MAX_, extraConfig.max())
                 .where(VITAMIN_CONFIG_EXTRA.ID_.eq(extraConfig.id()))
                 .returningResult(
                         VITAMIN_CONFIG_EXTRA.ID_,
                         VITAMIN_CONFIG_EXTRA.VITAMIN_CONFIG_,
                         VITAMIN_CONFIG_EXTRA.QUESTION_,
                         VITAMIN_CONFIG_EXTRA.ANSWER_,
-                        VITAMIN_CONFIG_EXTRA.IS_REMOVED_
+                        VITAMIN_CONFIG_EXTRA.IS_REMOVED_,
+                        VITAMIN_CONFIG_EXTRA.MIN_,
+                        VITAMIN_CONFIG_EXTRA.MAX_,
+                        VITAMIN_CONFIG_EXTRA.ANSWERS_
+
                 ).fetchOne(mapping(VitaminConfigExtra::new));
     }
 
