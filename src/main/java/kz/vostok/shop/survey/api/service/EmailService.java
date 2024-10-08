@@ -4,6 +4,7 @@ import io.micronaut.email.Email;
 import io.micronaut.email.EmailSender;
 import io.micronaut.email.MultipartBody;
 import jakarta.inject.Singleton;
+import kz.vostok.shop.survey.api.record.VitaminConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,12 +18,21 @@ public class EmailService {
         this.emailSender = emailSender;
     }
 
-    public void sendWelcomeEmail(String from, String to) {
+    public void sendWelcomeEmail(String from, String to, String firstname, VitaminConfig config) {
         emailSender.send(Email.builder()
                 .from(from)
                 .to(to)
-                .subject("Micronaut test")
-                .body(new MultipartBody("<html><body><strong>Hello</strong> dear Micronaut user.</body></html>", "Hello dear Micronaut user")));
+                .subject("Vostokshop.kz рекомендации витаминов")
+                .body(new MultipartBody(
+                    """
+                    <html>
+                    <body>
+                           <strong>%s</strong>, направляем наши рекомендации по витаминам.
+                           <h2>%s</h2>
+                           <p>%s</p>
+                           <a target="_blank" href="%s">Оформить витамины</a>
+                    </body></html>
+                    """.formatted(firstname, config.name(), config.description(), config.link()), "")));
     }
 
     public boolean sendForgotPasswordCode(String from, String to, String code) {

@@ -3,6 +3,7 @@ package kz.vostok.shop.survey.api.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -28,5 +29,26 @@ public class PasswordUtil {
             stringBuilder.append(index);
         }
         return stringBuilder.toString();
+    }
+
+    public static String hashHexString(String value) {
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        // Compute message digest of the input
+        byte[] message = messageDigest.digest(value.getBytes());
+        return convertToHex(message);
+    }
+
+    private static String convertToHex(final byte[] messageDigest) {
+        BigInteger bigint = new BigInteger(1, messageDigest);
+        String hexText = bigint.toString(16);
+        while (hexText.length() < 32) {
+            hexText = "0".concat(hexText);
+        }
+        return hexText;
     }
 }

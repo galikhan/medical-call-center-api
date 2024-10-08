@@ -3,6 +3,7 @@ package kz.vostok.shop.survey.api.repository;
 import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.ParticipantRecord;
 import kz.vostok.shop.survey.api.record.Participant;
+import kz.vostok.shop.survey.api.util.PasswordUtil;
 import org.jooq.DSLContext;
 
 import java.util.List;
@@ -23,9 +24,13 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
 
     @Override
     public Participant create(Participant participant) {
+        var code = PasswordUtil.forgotPasswordCode(5);
+        var hash = PasswordUtil.hashHexString(code);
+
         return this.dsl
                 .insertInto(PARTICIPANT)
                 .set(PARTICIPANT.FIRSTNAME_, participant.firstname())
+                .set(PARTICIPANT.HASH_, hash)
                 .returningResult(
                         PARTICIPANT.ID_,
                         PARTICIPANT.FIRSTNAME_,
@@ -37,7 +42,8 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
                         PARTICIPANT.AIM_,
                         PARTICIPANT.CITY_,
                         PARTICIPANT.ALLERGY_,
-                        PARTICIPANT.CREATED_
+                        PARTICIPANT.CREATED_,
+                        PARTICIPANT.HASH_
                 ).fetchOne(mapping(Participant::new));
     }
 
@@ -54,6 +60,7 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
                 .set(PARTICIPANT.AIM_, participant.aim())
                 .set(PARTICIPANT.CITY_, participant.city())
                 .set(PARTICIPANT.ALLERGY_, participant.allergy())
+                .set(PARTICIPANT.HASH_, participant.hash())
                 .where(PARTICIPANT.ID_.eq(participant.id()))
                 .returningResult(
                         PARTICIPANT.ID_,
@@ -66,7 +73,8 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
                         PARTICIPANT.AIM_,
                         PARTICIPANT.CITY_,
                         PARTICIPANT.ALLERGY_,
-                        PARTICIPANT.CREATED_
+                        PARTICIPANT.CREATED_,
+                        PARTICIPANT.HASH_
                 ).fetchOne(mapping(Participant::new));
     }
 
@@ -115,4 +123,13 @@ public class ParticipantRepository implements AbstractRepository<Participant, Pa
                 .where(PARTICIPANT.ID_.eq(id))
                 .execute();
     }
+
+    public Participant findByHash(String hash) {
+        var rec = this.dsl
+                .selectFrom(PARTICIPANT)
+                .where(PARTICIPANT.HASH_.eq(hash))
+                .fetchOptional();
+
+        return rec.isPresent() ? Participant.to(rec.get()) : Participant.empty();
+     }
 }

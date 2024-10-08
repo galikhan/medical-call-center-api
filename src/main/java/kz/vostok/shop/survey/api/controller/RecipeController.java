@@ -14,13 +14,12 @@ import kz.vostok.shop.survey.api.repository.SurveyRepository;
 import kz.vostok.shop.survey.api.repository.VitaminConfigParamRepository;
 import kz.vostok.shop.survey.api.repository.VitaminConfigRepository;
 import kz.vostok.shop.survey.api.service.EmailService;
+import kz.vostok.shop.survey.api.util.PasswordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,18 +60,18 @@ public class RecipeController {
 
     @Get("/send")
     public void send() {
-        this.emailService.sendWelcomeEmail("galixan@mail.ru", "galikhan.khamitov@gmail.com");
+//        this.emailService.sendWelcomeEmail("galixan@mail.ru", "galikhan.khamitov@gmail.com", participant.firstname(), config);
     }
 
-    @Get("/participant/{participant}")
-    public Object sendRecipeEmail(Long participant) {
+    @Get("/participant/{participantId}")
+    public Object sendRecipeEmail(Long participantId) {
 
         Set<Long> vitaminConfigSet = new HashSet<>();
-        var answers = this.participantAnswerRepository.findByParticipant(participant);
+        var answers = this.participantAnswerRepository.findByParticipant(participantId);
         var optionalSurvey = this.surveyRepository.findActive();
         Map<Long, Integer> configMeetAnswerCount = new HashMap<>();
 
-        if(optionalSurvey.isPresent()) {
+        if (optionalSurvey.isPresent()) {
 
             var survey = Survey.to(optionalSurvey.get());
             log.info("survey {}", survey);
@@ -87,14 +86,14 @@ public class RecipeController {
 
                 var question = this.questionRepository.findById(answer.question());
                 var dictOptional = this.dictionaryRepository.findRecordById(question.category());
-                var categoryCode = dictOptional.isPresent()? dictOptional.get().getCode_() : null;
-                if("name".equals(categoryCode) || "email".equals(categoryCode) || "city".equals(categoryCode)) {
+                var categoryCode = dictOptional.isPresent() ? dictOptional.get().getCode_() : null;
+                if ("name".equals(categoryCode) || "email".equals(categoryCode) || "city".equals(categoryCode)) {
                     log.info("non filter param {}", categoryCode);
                 } else {
                     var selectedVitaminConfigIds = vitaminConfigParamRepository.findConfigsThatMeetsAnswer(allVitaminConfigIds, dictOptional, answer, question);
 //                    log.info("ids - of answer {}, answers - {}, {}", answer.value(), answer.answers(), selectedVitaminConfigIds);
                     selectedVitaminConfigIds.stream().forEach(id -> {
-                        if(configMeetAnswerCount.containsKey(id)) {
+                        if (configMeetAnswerCount.containsKey(id)) {
                             configMeetAnswerCount.put(id, configMeetAnswerCount.get(id) + 1);
                         } else {
                             configMeetAnswerCount.put(id, 1);
@@ -106,11 +105,19 @@ public class RecipeController {
         }
 
         Long maxKey = configMeetAnswerCount.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-        if(maxKey != null) {
-            return vitaminConfigRepository.findById(maxKey);
+        if (maxKey != null) {
+            var config = vitaminConfigRepository.findById(maxKey);
+            var participant = participantRepository.findById(participantId);
+            this.emailService.sendWelcomeEmail("galixan@mail.ru", participant.email(), participant.firstname(), config);
+            return config;
         }
-        //        this.emailService.sendWelcomeEmail("galixan@mail.ru", "galikhan.khamitov@gmail.com");
         return null;
     }
 
+    @Get("/participant/hash")
+    public String getHash() {
+        var code = PasswordUtil.forgotPasswordCode(10);
+        var hash = PasswordUtil.hashHexString(code);
+        return hash;
+    }
 }

@@ -49,6 +49,11 @@ public class ParticipantController {
         return participantRepository.findById(id);
     }
 
+    @Get("/hash/{hash}")
+    public Participant findByHash(String hash) {
+        return participantRepository.findByHash(hash);
+    }
+
     @Get("/page/{page}/size/{size}")
     public ParticipantPage page(Integer page, Integer size) {
         return participantService.page(page, size, null);
