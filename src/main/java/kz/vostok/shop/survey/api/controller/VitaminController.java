@@ -59,7 +59,6 @@ public class VitaminController {
         return vitaminRepository.findCategory();
     }
 
-
     @Delete("/{id}")
     public int remove(Long id) {
         return vitaminRepository.remove(id);

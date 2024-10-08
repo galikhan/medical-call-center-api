@@ -7,6 +7,7 @@ import kz.jooq.model.tables.records.VitaminConfigParamRecord;
 import kz.vostok.shop.survey.api.record.ParticipantAnswer;
 import kz.vostok.shop.survey.api.record.Question;
 import kz.vostok.shop.survey.api.record.VitaminConfigParam;
+import kz.vostok.shop.survey.api.record.VitaminConfigParamExt;
 import org.jooq.DSLContext;
 
 import java.time.LocalDate;
@@ -17,6 +18,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static kz.jooq.model.tables.Question.QUESTION;
+import static kz.jooq.model.tables.Vitamin.VITAMIN;
 import static kz.jooq.model.tables.VitaminConfigParam.VITAMIN_CONFIG_PARAM;
 import static org.jooq.Records.mapping;
 
@@ -113,12 +116,15 @@ public class VitaminConfigParamRepository implements AbstractRepository<VitaminC
 
     @Override
     public int total() {
-        return 0;
+        return this.dsl.selectCount().from(VITAMIN_CONFIG_PARAM)
+                .where(VITAMIN_CONFIG_PARAM.IS_REMOVED_.eq(false))
+                .fetchSingle()
+                .value1();
     }
 
     public Set<Long> findConfigsThatMeetsAnswer(List<Long> vitaminConfigIds, Optional<DictionaryRecord> optionalCategory, ParticipantAnswer answer, Question question) {
         String code = null;
-        if(optionalCategory.isPresent()) {
+        if (optionalCategory.isPresent()) {
             code = optionalCategory.get().getCode_();
         }
 
@@ -132,13 +138,13 @@ public class VitaminConfigParamRepository implements AbstractRepository<VitaminC
 //
 //        }
 
-        if(question.type().equals(QuestionType.random_number)) {
+        if (question.type().equals(QuestionType.random_number)) {
             var number = Integer.parseInt(answer.value());
 //            System.out.println("number : " + number);
             query.and(VITAMIN_CONFIG_PARAM.MIN_.le(number))
                     .and(VITAMIN_CONFIG_PARAM.MAX_.ge(number));
 
-        } else if(question.type().equals(QuestionType.date)) {
+        } else if (question.type().equals(QuestionType.date)) {
 
             String stringDate = answer.value();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy", Locale.ENGLISH);
@@ -149,16 +155,39 @@ public class VitaminConfigParamRepository implements AbstractRepository<VitaminC
             query.and(VITAMIN_CONFIG_PARAM.MIN_.le(age))
                     .and(VITAMIN_CONFIG_PARAM.MAX_.ge(age));
 
-        } else if(question.type().equals(QuestionType.single_choice)) {
+        } else if (question.type().equals(QuestionType.single_choice)) {
             Long id = Long.parseLong(answer.value());
             query.and(VITAMIN_CONFIG_PARAM.ANSWER_.eq(id));
-        } else if(question.type().equals(QuestionType.multiple_choice)) {
+        } else if (question.type().equals(QuestionType.multiple_choice)) {
             query.and(VITAMIN_CONFIG_PARAM.ANSWERS_.eq(answer.answers()));
         }
 //        System.out.println("----------start ----------");
 //        System.out.println(query.getSQL());
 //        System.out.println("----------end ----------");
-        return query.fetch().stream().map(item-> item.value1())
+        return query.fetch().stream().map(item -> item.value1())
                 .collect(Collectors.toSet());
+    }
+
+    public List<VitaminConfigParamExt> page(int limit, int offset, Long reference) {
+        return this.dsl
+                .select(VITAMIN_CONFIG_PARAM.ID_, QUESTION.NAME_, QUESTION.CATEGORY_, VITAMIN_CONFIG_PARAM.IS_REMOVED_)
+                .from(VITAMIN_CONFIG_PARAM)
+                .join(QUESTION).on(VITAMIN_CONFIG_PARAM.QUESTION_.eq(QUESTION.ID_))
+                .where(VITAMIN_CONFIG_PARAM.IS_REMOVED_.eq(false))
+                .and(VITAMIN_CONFIG_PARAM.VITAMIN_CONFIG_.eq(reference))
+                .orderBy(VITAMIN_CONFIG_PARAM.ID_.desc())
+                .limit(limit).offset(offset)
+                .stream()
+                .map(VitaminConfigParamExt::to)
+                .collect(Collectors.toList());
+    }
+
+    public Integer total(Long reference) {
+        return this.dsl.selectCount()
+                .from(VITAMIN_CONFIG_PARAM)
+                .where(VITAMIN_CONFIG_PARAM.IS_REMOVED_.eq(false))
+                .and(VITAMIN_CONFIG_PARAM.VITAMIN_CONFIG_.eq(reference))
+                .fetchSingle()
+                .value1();
     }
 }
