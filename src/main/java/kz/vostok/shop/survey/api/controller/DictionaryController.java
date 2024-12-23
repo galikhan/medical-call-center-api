@@ -5,7 +5,6 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import kz.vostok.shop.survey.api.record.Dictionary;
 import kz.vostok.shop.survey.api.repository.DictionaryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,15 +23,15 @@ public class DictionaryController {
         this.dictionaryRepository = dictionaryRepository;
     }
 
-    @Get("/key/{key}")
-    public List<Dictionary> findByKey(String key) {
-        return dictionaryRepository.findByKey(key);
-    }
-
-    @Get("/id/{id}")
-    public Dictionary findById(Long id) {
-        return dictionaryRepository.findById(id);
-    }
-
+//    @Get("/key/{key}")
+//    public List<Dictionary> findByKey(String key) {
+//        return dictionaryRepository.findByKey(key);
+//    }
+//
+//    @Get("/id/{id}")
+//    public Dictionary findById(Long id) {
+//        return dictionaryRepository.findById(id);
+//    }
+//
 
 }

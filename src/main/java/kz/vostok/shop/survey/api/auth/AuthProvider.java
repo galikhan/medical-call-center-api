@@ -7,7 +7,7 @@ import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.provider.AuthenticationProvider;
 import jakarta.inject.Singleton;
-import kz.vostok.shop.survey.api.repository.VostokShopSurveyUserRepository;
+import kz.vostok.shop.survey.api.repository.MedicalCallCenterUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +16,10 @@ import org.slf4j.LoggerFactory;
 public class AuthProvider<T, I, S> implements AuthenticationProvider<T, I, S> {
 
     private Logger logger = LoggerFactory.getLogger(AuthProvider.class);
-    private VostokShopSurveyUserRepository vostokShopSurveyUserRepository;
+    private MedicalCallCenterUserRepository medicalCallCenterUserRepository;
 
-    public AuthProvider(VostokShopSurveyUserRepository vostokShopSurveyUserRepository) {
-        this.vostokShopSurveyUserRepository = vostokShopSurveyUserRepository;
+    public AuthProvider(MedicalCallCenterUserRepository medicalCallCenterUserRepository) {
+        this.medicalCallCenterUserRepository = medicalCallCenterUserRepository;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AuthProvider<T, I, S> implements AuthenticationProvider<T, I, S> {
         var sec = authRequest.getSecret();
 //        var password = PasswordUtil.hashString(sec.toString());
         var password = sec.toString();
-        var userOptional = vostokShopSurveyUserRepository.findByUsernameAndPassword(id.toString(), password);
+        var userOptional = medicalCallCenterUserRepository.findByUsernameAndPassword(id.toString(), password);
 
         logger.info("id {},  sec {}, user {}", id, sec, userOptional);
         if (userOptional.isPresent()) {

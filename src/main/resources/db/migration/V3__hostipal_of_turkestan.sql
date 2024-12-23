@@ -1,0 +1,1 @@
+insert into organization(name_,created_) values('Городская поликлиника города Туркестан', now());

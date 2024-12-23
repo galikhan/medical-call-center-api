@@ -82,7 +82,7 @@ configurations {
 
 flyway {
     configurations = ['flywayMigration']
-    url = 'jdbc:postgresql://localhost:5432/vostok_shop_survey'
+    url = 'jdbc:postgresql://localhost:5432/medical_call_center'
     user = 'postgres'
     password = 'postgres'
 }
