@@ -20,25 +20,6 @@ public class MedicalCallCenterUserRepository {
         this.dsl = dsl;
     }
 
-    //    public SteamUserLimited register(SteamUserAndOtp user) {
-//
-//        return this.dsl
-//                .insertInto(STEAM_USER)
-//                .set(STEAM_USER.USERNAME_, user.username())
-//                .set(STEAM_USER.PASSWORD_, hashString(user.password()))
-//                .set(STEAM_USER.ROLE_, "user")
-//                .returningResult(
-//                        STEAM_USER.ID_,
-//                        STEAM_USER.USERNAME_,
-//                        STEAM_USER.FIRSTNAME_,
-//                        STEAM_USER.LASTNAME_,
-//                        STEAM_USER.ROLE_,
-//                        STEAM_USER.AVATAR_,
-//                        STEAM_USER.EMAIL_,
-//                        STEAM_USER.CITY_
-//                ).fetchOne(mapping(SteamUserLimited::new));
-//    }
-//
 
     public MedicalCallCenterUser create(MedicalCallCenterUser user) {
 
