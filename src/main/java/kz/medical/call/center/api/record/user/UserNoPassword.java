@@ -6,8 +6,11 @@ import kz.jooq.model.tables.records.MedicalCallCenterUserRecord;
 
 import java.time.LocalDate;
 
+import static kz.medical.call.center.api.util.DateUtil.fromIsoDateToString;
+
 @Serdeable
-public record UserNoPassword(Long id, String username, String iin, String firstname, String lastname, LocalDate birtDate, GenderType gender, String role) {
+public record UserNoPassword(Long id, String username, String iin, String firstname, String lastname, String birthDate,
+                             GenderType gender, String role) {
     public static UserNoPassword to(MedicalCallCenterUserRecord record) {
         return new UserNoPassword(
                 record.getId_(),
@@ -15,9 +18,22 @@ public record UserNoPassword(Long id, String username, String iin, String firstn
                 record.getIin_(),
                 record.getFirstname_(),
                 record.getLastname_(),
-                record.getBirthDate_(),
+                fromIsoDateToString(record.getBirthDate_()),
                 record.getGender_(),
                 record.getRole_()
+        );
+    }
+
+    public static UserNoPassword fromColumnsTo(Long id, String username, String iin, String firstname, String lastname, LocalDate birthDate, GenderType gender, String role) {
+        return new UserNoPassword(
+                id,
+                username,
+                iin,
+                firstname,
+                lastname,
+                fromIsoDateToString(birthDate),
+                gender,
+                role
         );
     }
 

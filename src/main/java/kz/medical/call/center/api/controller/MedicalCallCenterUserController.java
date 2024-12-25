@@ -11,10 +11,17 @@ import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.MedicalCallCenterUser;
 import kz.medical.call.center.api.record.user.UserNoPassword;
 import kz.medical.call.center.api.repository.MedicalCallCenterUserRepository;
+import kz.medical.call.center.api.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static kz.medical.call.center.api.util.DateUtil.fromStringToIsoDate;
+import static kz.medical.call.center.api.util.DateUtil.fromStringToIsoDatetime;
 
 @CrossOrigin
 @Controller("/api/v1/user")
@@ -31,22 +38,16 @@ public class MedicalCallCenterUserController {
 
     @Post
     public UserNoPassword create(@Body MedicalCallCenterUser user) {
-        var iin = user.iin();
-        log.info("user {}", user);
-        log.info("date {}", user.birthDate());
+        var birthDate = fromStringToIsoDate(user.birthDate());
 
-//        var userByIin = medicalCallCenterUserRepository.findByIin(iin);
-//        if(userByIin.id() != null) {
-//            var userToUpdate = new MedicalCallCenterUser(null, userByIin.username(), null, user.iin(), user.firstname(), user.lastname(), user.birthDate());
-//            return medicalCallCenterUserRepository.update(userToUpdate);
-//        } else {
-            return medicalCallCenterUserRepository.create(user);
-//        }
+        return medicalCallCenterUserRepository.create(user, birthDate);
     }
 
     @Put
     public UserNoPassword update(@Body MedicalCallCenterUser user) {
-        return medicalCallCenterUserRepository.update(user);
+        log.info("user.birthDate() {}", user.birthDate());
+        var birthDate = fromStringToIsoDate(user.birthDate());
+        return medicalCallCenterUserRepository.update(user, birthDate);
     }
 
     @Get("/find/iin/{iin}")
