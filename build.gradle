@@ -43,7 +43,7 @@ dependencies {
 
 
 application {
-    mainClass = "kz.vostok.shop.survey.api.Application"
+    mainClass = "kz.medical.call.center.api.Application"
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
@@ -57,7 +57,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("kz.vostok.shop.survey.api.*")
+        annotations("kz.medical.call.center.api.*")
     }
     aot {
     // Please review carefully the optimizations enabled below
