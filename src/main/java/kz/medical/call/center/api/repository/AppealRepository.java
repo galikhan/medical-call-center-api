@@ -30,10 +30,12 @@ public class AppealRepository {
                 .set(APPEAL.DESCRIPTION_, appeal.description())
                 .set(APPEAL.APPEAL_DATE_, appeal.appealDate())
                 .set(APPEAL.ORGANIZATION_, appeal.organization())
-                .set(APPEAL.DOCTOR_, appeal.doctor())
                 .set(APPEAL.APPLICANT_, appeal.applicant())
                 .set(APPEAL.OWNER_, owner)
                 .set(APPEAL.CREATED_, LocalDateTime.now())
+                .set(APPEAL.DOCTOR_INFO_, appeal.doctorInfo())
+                .set(APPEAL.CATEGORY_, appeal.category())
+                .set(APPEAL.ACTS_TAKEN_, appeal.actsTaken())
                 .returningResult(
                         APPEAL.ID_,
                         APPEAL.TYPE_,
@@ -41,11 +43,13 @@ public class AppealRepository {
                         APPEAL.DESCRIPTION_,
                         APPEAL.APPEAL_DATE_,
                         APPEAL.ORGANIZATION_,
-                        APPEAL.DOCTOR_,
                         APPEAL.APPLICANT_,
                         APPEAL.OWNER_,
                         APPEAL.CREATED_,
-                        APPEAL.IS_REMOVED_
+                        APPEAL.IS_REMOVED_,
+                        APPEAL.CATEGORY_,
+                        APPEAL.DOCTOR_INFO_,
+                        APPEAL.ACTS_TAKEN_
                 ).fetchOne(mapping(Appeal::new));
     }
 
@@ -57,9 +61,11 @@ public class AppealRepository {
                 .set(APPEAL.DESCRIPTION_, appeal.description())
                 .set(APPEAL.APPEAL_DATE_, appeal.appealDate())
                 .set(APPEAL.ORGANIZATION_, appeal.organization())
-                .set(APPEAL.DOCTOR_, appeal.doctor())
                 .set(APPEAL.APPLICANT_, appeal.applicant())
                 .set(APPEAL.OWNER_, appeal.owner())
+                .set(APPEAL.DOCTOR_INFO_, appeal.doctorInfo())
+                .set(APPEAL.CATEGORY_, appeal.category())
+                .set(APPEAL.ACTS_TAKEN_, appeal.actsTaken())
                 .where(APPEAL.ID_.eq(appeal.id()))
                 .returningResult(
                         APPEAL.ID_,
@@ -68,11 +74,13 @@ public class AppealRepository {
                         APPEAL.DESCRIPTION_,
                         APPEAL.APPEAL_DATE_,
                         APPEAL.ORGANIZATION_,
-                        APPEAL.DOCTOR_,
                         APPEAL.APPLICANT_,
                         APPEAL.OWNER_,
                         APPEAL.CREATED_,
-                        APPEAL.IS_REMOVED_
+                        APPEAL.IS_REMOVED_,
+                        APPEAL.CATEGORY_,
+                        APPEAL.DOCTOR_INFO_,
+                        APPEAL.ACTS_TAKEN_
                 ).fetchOne(mapping(Appeal::new));
     }
 
@@ -106,7 +114,7 @@ public class AppealRepository {
         return this.dsl
                 .selectFrom(APPEAL)
                 .where(APPEAL.IS_REMOVED_.eq(false))
-                .orderBy(APPEAL.ID_)
+                .orderBy(APPEAL.ID_.desc())
                 .limit(limit).offset(offset)
                 .stream()
                 .map(Appeal::to)
@@ -120,5 +128,25 @@ public class AppealRepository {
                 .set(APPEAL.IS_REMOVED_, true)
                 .where(APPEAL.ID_.eq(id))
                 .execute();
+    }
+
+    public int totalByType(String type) {
+        return this.dsl
+                .selectCount()
+                .from(APPEAL)
+                .where(APPEAL.TYPE_.eq(type))
+                .fetch().get(0).value1();
+    }
+
+    public List<Appeal> pageByType(String type, int limit, int offset) {
+        return this.dsl
+                .selectFrom(APPEAL)
+                .where(APPEAL.IS_REMOVED_.eq(false))
+                .and(APPEAL.TYPE_.eq(type))
+                .orderBy(APPEAL.ID_.desc())
+                .limit(limit).offset(offset)
+                .stream()
+                .map(Appeal::to)
+                .collect(Collectors.toList());
     }
 }

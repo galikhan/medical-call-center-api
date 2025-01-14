@@ -1,0 +1,1 @@
+alter table appeal add column category_ bigint references appeal_category(id_);

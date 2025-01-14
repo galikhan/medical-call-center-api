@@ -1,0 +1,1 @@
+alter table appeal add column acts_taken_ text;

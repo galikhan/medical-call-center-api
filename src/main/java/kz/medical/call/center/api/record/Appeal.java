@@ -12,11 +12,15 @@ public record Appeal(Long id,
                      String description,
                      LocalDateTime appealDate,
                      Long organization,
-                     Long doctor,
                      Long applicant,
                      Long owner,
                      LocalDateTime created,
-                     Boolean isRemoved) {
+                     Boolean isRemoved
+        ,
+                     Long category,
+                     String doctorInfo,
+                     String actsTaken
+) {
 
     public static Appeal to(AppealRecord record) {
         return new Appeal(record.getId_(),
@@ -25,14 +29,17 @@ public record Appeal(Long id,
                 record.getDescription_(),
                 record.getAppealDate_(),
                 record.getOrganization_(),
-                record.getDoctor_(),
                 record.getApplicant_(),
                 record.getOwner_(),
                 record.getCreated_(),
-                record.getIsRemoved_());
+                record.getIsRemoved_(),
+                record.getCategory_(),
+                record.getDoctorInfo_(),
+                record.getActsTaken_()
+        );
     }
 
     public static Appeal empty() {
-        return new Appeal(null, null, null, null, null, null, null, null, null, null, null);
+        return new Appeal(null, null,null, null, null, null, null, null, null, null, null, null, null);
     }
 }

@@ -1,0 +1,1 @@
+alter table appeal add column doctor_info_ text;

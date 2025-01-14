@@ -1,0 +1,1 @@
+alter table medical_call_center_user add column phone_ varchar(15);

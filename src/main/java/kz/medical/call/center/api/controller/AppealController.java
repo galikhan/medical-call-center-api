@@ -53,6 +53,11 @@ public class AppealController {
         return this.appealService.page(page, size, null);
     }
 
+    @Get("/view/type/{type}/page/{page}/size/{size}")
+    public AppealPage findPage(String type, int page, int size) {
+        return this.appealService.pageByType(type, page, size, null);
+    }
+
     @Delete("{id}")
     public int remove(Long id) {
         return this.appealRepository.remove(id);

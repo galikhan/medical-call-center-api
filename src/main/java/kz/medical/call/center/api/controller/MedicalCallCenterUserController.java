@@ -11,17 +11,12 @@ import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.MedicalCallCenterUser;
 import kz.medical.call.center.api.record.user.UserNoPassword;
 import kz.medical.call.center.api.repository.MedicalCallCenterUserRepository;
-import kz.medical.call.center.api.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static kz.medical.call.center.api.util.DateUtil.fromStringToIsoDate;
-import static kz.medical.call.center.api.util.DateUtil.fromStringToIsoDatetime;
 
 @CrossOrigin
 @Controller("/api/v1/user")

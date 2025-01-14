@@ -37,6 +37,7 @@ public class MedicalCallCenterUserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.GENDER_, user.gender())
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
                 .set(MEDICAL_CALL_CENTER_USER.BIRTH_DATE_, birthDate)
+                .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
                 .returningResult(
                         MEDICAL_CALL_CENTER_USER.ID_,
                         MEDICAL_CALL_CENTER_USER.USERNAME_,
@@ -45,7 +46,8 @@ public class MedicalCallCenterUserRepository {
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
                         MEDICAL_CALL_CENTER_USER.BIRTH_DATE_,
                         MEDICAL_CALL_CENTER_USER.GENDER_,
-                        MEDICAL_CALL_CENTER_USER.ROLE_
+                        MEDICAL_CALL_CENTER_USER.ROLE_,
+                        MEDICAL_CALL_CENTER_USER.PHONE_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
     }
 
@@ -60,6 +62,7 @@ public class MedicalCallCenterUserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.GENDER_, user.gender())
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
                 .set(MEDICAL_CALL_CENTER_USER.BIRTH_DATE_, birthDate)
+                .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
                 .where(MEDICAL_CALL_CENTER_USER.ID_.eq(user.id()))
                 .returningResult(
                         MEDICAL_CALL_CENTER_USER.ID_,
@@ -69,7 +72,8 @@ public class MedicalCallCenterUserRepository {
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
                         MEDICAL_CALL_CENTER_USER.BIRTH_DATE_,
                         MEDICAL_CALL_CENTER_USER.GENDER_,
-                        MEDICAL_CALL_CENTER_USER.ROLE_
+                        MEDICAL_CALL_CENTER_USER.ROLE_,
+                        MEDICAL_CALL_CENTER_USER.PHONE_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
 
 

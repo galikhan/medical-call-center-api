@@ -23,4 +23,13 @@ public class AppealService implements PaginationService<Appeal, AppealPage> {
         var data = appealRepository.page(limit, offset);
         return new AppealPage(total, data);
     }
+
+    public AppealPage pageByType(String type, int page, int size, Object o) {
+        int offset = (page > 0 ? (page - 1) * size : size);
+        var limit = size;
+
+        var total = appealRepository.totalByType(type);
+        var data = appealRepository.pageByType(type, limit, offset);
+        return new AppealPage(total, data);
+    }
 }
