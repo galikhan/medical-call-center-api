@@ -1,5 +1,6 @@
 package kz.medical.call.center.api.repository;
 
+import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.AppealRecord;
 import kz.medical.call.center.api.record.Appeal;
@@ -23,10 +24,11 @@ public class AppealRepository {
     }
 
     public Appeal create(Appeal appeal, Long owner) {
+        var status = StringUtils.isNotEmpty(appeal.status()) ? appeal.status() : null;
         return this.dsl
                 .insertInto(APPEAL)
                 .set(APPEAL.TYPE_, appeal.type())
-                .set(APPEAL.STATUS_, appeal.status())
+                .set(APPEAL.STATUS_, status)
                 .set(APPEAL.DESCRIPTION_, appeal.description())
                 .set(APPEAL.APPEAL_DATE_, appeal.appealDate())
                 .set(APPEAL.ORGANIZATION_, appeal.organization())

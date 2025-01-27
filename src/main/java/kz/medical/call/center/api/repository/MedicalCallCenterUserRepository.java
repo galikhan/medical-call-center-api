@@ -7,7 +7,6 @@ import kz.medical.call.center.api.record.user.UserNoPassword;
 import kz.medical.call.center.api.util.PasswordUtil;
 import org.jooq.DSLContext;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class MedicalCallCenterUserRepository {
     }
 
 
-    public UserNoPassword create(MedicalCallCenterUser user, LocalDate birthDate) {
+    public UserNoPassword create(MedicalCallCenterUser user) {
 
         return this.dsl
                 .insertInto(MEDICAL_CALL_CENTER_USER)
@@ -34,9 +33,7 @@ public class MedicalCallCenterUserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.IIN_, user.iin())
                 .set(MEDICAL_CALL_CENTER_USER.FIRSTNAME_, user.firstname())
                 .set(MEDICAL_CALL_CENTER_USER.LASTNAME_, user.lastname())
-                .set(MEDICAL_CALL_CENTER_USER.GENDER_, user.gender())
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
-                .set(MEDICAL_CALL_CENTER_USER.BIRTH_DATE_, birthDate)
                 .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
                 .returningResult(
                         MEDICAL_CALL_CENTER_USER.ID_,
@@ -44,24 +41,20 @@ public class MedicalCallCenterUserRepository {
                         MEDICAL_CALL_CENTER_USER.IIN_,
                         MEDICAL_CALL_CENTER_USER.FIRSTNAME_,
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
-                        MEDICAL_CALL_CENTER_USER.BIRTH_DATE_,
-                        MEDICAL_CALL_CENTER_USER.GENDER_,
                         MEDICAL_CALL_CENTER_USER.ROLE_,
                         MEDICAL_CALL_CENTER_USER.PHONE_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
     }
 
 
-    public UserNoPassword update(MedicalCallCenterUser user, LocalDate birthDate) {
+    public UserNoPassword update(MedicalCallCenterUser user) {
         return this.dsl
                 .update(MEDICAL_CALL_CENTER_USER)
                 .set(MEDICAL_CALL_CENTER_USER.USERNAME_, user.username())
                 .set(MEDICAL_CALL_CENTER_USER.IIN_, user.iin())
                 .set(MEDICAL_CALL_CENTER_USER.FIRSTNAME_, user.firstname())
                 .set(MEDICAL_CALL_CENTER_USER.LASTNAME_, user.lastname())
-                .set(MEDICAL_CALL_CENTER_USER.GENDER_, user.gender())
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
-                .set(MEDICAL_CALL_CENTER_USER.BIRTH_DATE_, birthDate)
                 .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
                 .where(MEDICAL_CALL_CENTER_USER.ID_.eq(user.id()))
                 .returningResult(
@@ -70,8 +63,6 @@ public class MedicalCallCenterUserRepository {
                         MEDICAL_CALL_CENTER_USER.IIN_,
                         MEDICAL_CALL_CENTER_USER.FIRSTNAME_,
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
-                        MEDICAL_CALL_CENTER_USER.BIRTH_DATE_,
-                        MEDICAL_CALL_CENTER_USER.GENDER_,
                         MEDICAL_CALL_CENTER_USER.ROLE_,
                         MEDICAL_CALL_CENTER_USER.PHONE_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));

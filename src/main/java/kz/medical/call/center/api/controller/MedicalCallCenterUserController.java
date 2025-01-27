@@ -33,16 +33,12 @@ public class MedicalCallCenterUserController {
 
     @Post
     public UserNoPassword create(@Body MedicalCallCenterUser user) {
-        var birthDate = fromStringToIsoDate(user.birthDate());
-
-        return medicalCallCenterUserRepository.create(user, birthDate);
+        return medicalCallCenterUserRepository.create(user);
     }
 
     @Put
     public UserNoPassword update(@Body MedicalCallCenterUser user) {
-        log.info("user.birthDate() {}", user.birthDate());
-        var birthDate = fromStringToIsoDate(user.birthDate());
-        return medicalCallCenterUserRepository.update(user, birthDate);
+        return medicalCallCenterUserRepository.update(user);
     }
 
     @Get("/find/iin/{iin}")

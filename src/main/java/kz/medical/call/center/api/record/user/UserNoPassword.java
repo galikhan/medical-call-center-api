@@ -9,8 +9,7 @@ import java.time.LocalDate;
 import static kz.medical.call.center.api.util.DateUtil.fromIsoDateToString;
 
 @Serdeable
-public record UserNoPassword(Long id, String username, String iin, String firstname, String lastname, String birthDate,
-                             GenderType gender, String role, String phone) {
+public record UserNoPassword(Long id, String username, String iin, String firstname, String lastname, String role, String phone) {
     public static UserNoPassword to(MedicalCallCenterUserRecord record) {
         return new UserNoPassword(
                 record.getId_(),
@@ -18,28 +17,24 @@ public record UserNoPassword(Long id, String username, String iin, String firstn
                 record.getIin_(),
                 record.getFirstname_(),
                 record.getLastname_(),
-                fromIsoDateToString(record.getBirthDate_()),
-                record.getGender_(),
                 record.getRole_(),
                 record.getPhone_()
         );
     }
 
-    public static UserNoPassword fromColumnsTo(Long id, String username, String iin, String firstname, String lastname, LocalDate birthDate, GenderType gender, String role, String phone) {
+    public static UserNoPassword fromColumnsTo(Long id, String username, String iin, String firstname, String lastname, String role, String phone) {
         return new UserNoPassword(
                 id,
                 username,
                 iin,
                 firstname,
                 lastname,
-                fromIsoDateToString(birthDate),
-                gender,
                 role,
                 phone
         );
     }
 
     public static UserNoPassword empty() {
-        return new UserNoPassword(null,null, null, null, null, null, null, null, null);
+        return new UserNoPassword(null,null, null, null, null, null, null);
     }
 }
