@@ -6,6 +6,7 @@ import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Put;
+import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.Appeal;
@@ -57,9 +58,9 @@ public class AppealController {
     }
 
     @Get("/view/type/{type}/page/{page}/size/{size}")
-    public AppealPage findPage(Principal principal, String type, int page, int size) {
-        log.info("principal {}", principal.getName());
-        return this.appealService.pageByType(principal.getName(), type, page, size, null);
+    public AppealPage findPage(Principal principal, String type, int page, int size, @QueryValue("search-text") String searchText) {
+        log.info("principal {} searchText {}", principal.getName(), searchText);
+        return this.appealService.pageByType(principal.getName(), type, page, size, searchText);
     }
 
     @Delete("{id}")

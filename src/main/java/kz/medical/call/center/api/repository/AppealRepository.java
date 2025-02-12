@@ -4,7 +4,9 @@ import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.AppealRecord;
 import kz.medical.call.center.api.record.Appeal;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -132,44 +134,44 @@ public class AppealRepository {
                 .execute();
     }
 
-    public int totalByTypeAndOrganization(String type, Long organization) {
+    public int totalByParams(String type, Long organization, String searchText, Long id) {
+        var searchQuery = getSearchCondition(type, organization, searchText, id);
         return this.dsl
                 .selectCount()
                 .from(APPEAL)
                 .where(APPEAL.TYPE_.eq(type))
-                .and(APPEAL.ORGANIZATION_.eq(organization))
+                .and(searchQuery)
                 .fetch().get(0).value1();
     }
 
-    public List<Appeal> pageByTypeAndOrganization(String type, Long organization, int limit, int offset) {
+
+    public List<Appeal> pageByParams(String type, Long organization, int limit, int offset, String searchText, Long id) {
+        var searchQuery = getSearchCondition(type, organization, searchText, id);
         return this.dsl
                 .selectFrom(APPEAL)
                 .where(APPEAL.IS_REMOVED_.eq(false))
                 .and(APPEAL.TYPE_.eq(type))
-                .and(APPEAL.ORGANIZATION_.eq(organization))
+                .and(searchQuery)
                 .orderBy(APPEAL.ID_.desc())
                 .limit(limit).offset(offset)
                 .stream()
                 .map(Appeal::to)
                 .collect(Collectors.toList());
     }
-    public int totalByType(String type) {
-        return this.dsl
-                .selectCount()
-                .from(APPEAL)
-                .where(APPEAL.TYPE_.eq(type))
-                .fetch().get(0).value1();
-    }
 
-    public List<Appeal> pageByType(String type, int limit, int offset) {
-        return this.dsl
-                .selectFrom(APPEAL)
-                .where(APPEAL.IS_REMOVED_.eq(false))
-                .and(APPEAL.TYPE_.eq(type))
-                .orderBy(APPEAL.ID_.desc())
-                .limit(limit).offset(offset)
-                .stream()
-                .map(Appeal::to)
-                .collect(Collectors.toList());
+    private Condition getSearchCondition(String type, Long organization, String searchText, Long id) {
+        var searchQuery = APPEAL.TYPE_.eq(type);
+        if(organization !=null) {
+            searchQuery = searchQuery.and(APPEAL.ORGANIZATION_.eq(organization));
+        }
+
+        if(StringUtils.isNotEmpty(searchText)) {
+            if (id != null) {
+                searchQuery = searchQuery.and(APPEAL.ID_.eq(id).or(DSL.lower(APPEAL.DESCRIPTION_).contains(searchText.toLowerCase())));
+            } else {
+                searchQuery = searchQuery.and(DSL.lower(APPEAL.DESCRIPTION_).contains(searchText.toLowerCase()));
+            }
+        }
+        return searchQuery;
     }
 }
