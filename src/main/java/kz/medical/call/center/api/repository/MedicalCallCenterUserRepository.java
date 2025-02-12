@@ -25,7 +25,6 @@ public class MedicalCallCenterUserRepository {
 
 
     public UserNoPassword create(MedicalCallCenterUser user) {
-
         return this.dsl
                 .insertInto(MEDICAL_CALL_CENTER_USER)
                 .set(MEDICAL_CALL_CENTER_USER.USERNAME_, user.username())
@@ -35,6 +34,7 @@ public class MedicalCallCenterUserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.LASTNAME_, user.lastname())
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
                 .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
+                .set(MEDICAL_CALL_CENTER_USER.FULLNAME_, user.fullname())
                 .returningResult(
                         MEDICAL_CALL_CENTER_USER.ID_,
                         MEDICAL_CALL_CENTER_USER.USERNAME_,
@@ -42,7 +42,8 @@ public class MedicalCallCenterUserRepository {
                         MEDICAL_CALL_CENTER_USER.FIRSTNAME_,
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
                         MEDICAL_CALL_CENTER_USER.ROLE_,
-                        MEDICAL_CALL_CENTER_USER.PHONE_
+                        MEDICAL_CALL_CENTER_USER.PHONE_,
+                        MEDICAL_CALL_CENTER_USER.FULLNAME_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
     }
 
@@ -56,6 +57,7 @@ public class MedicalCallCenterUserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.LASTNAME_, user.lastname())
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
                 .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
+                .set(MEDICAL_CALL_CENTER_USER.FULLNAME_, user.fullname())
                 .where(MEDICAL_CALL_CENTER_USER.ID_.eq(user.id()))
                 .returningResult(
                         MEDICAL_CALL_CENTER_USER.ID_,
@@ -64,7 +66,8 @@ public class MedicalCallCenterUserRepository {
                         MEDICAL_CALL_CENTER_USER.FIRSTNAME_,
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
                         MEDICAL_CALL_CENTER_USER.ROLE_,
-                        MEDICAL_CALL_CENTER_USER.PHONE_
+                        MEDICAL_CALL_CENTER_USER.PHONE_,
+                        MEDICAL_CALL_CENTER_USER.FULLNAME_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
 
 
@@ -126,5 +129,10 @@ public class MedicalCallCenterUserRepository {
                 .where(MEDICAL_CALL_CENTER_USER.ID_.eq(id))
                 .fetchOptional();
         return opt.isPresent() ? UserNoPassword.to(opt.get()) : UserNoPassword.empty();
+    }
+
+    public List<MedicalCallCenterUser> findByIds(List<Long> ownerIds) {
+                return this.dsl.selectFrom(MEDICAL_CALL_CENTER_USER)
+                .where(MEDICAL_CALL_CENTER_USER.ID_.in(ownerIds)).fetch().stream().map(MedicalCallCenterUser::to).collect(Collectors.toUnmodifiableList());
     }
 }

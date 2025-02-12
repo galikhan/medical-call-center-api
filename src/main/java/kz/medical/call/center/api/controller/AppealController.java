@@ -13,6 +13,8 @@ import kz.medical.call.center.api.repository.AppealRepository;
 import kz.medical.call.center.api.record.page.AppealPage;
 import kz.medical.call.center.api.repository.MedicalCallCenterUserRepository;
 import kz.medical.call.center.api.service.AppealService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.Principal;
 
@@ -23,6 +25,7 @@ public class AppealController {
     public AppealRepository appealRepository;
     public AppealService appealService;
     public MedicalCallCenterUserRepository medicalCallCenterUserRepository;
+    private Logger log = LoggerFactory.getLogger(AppealController.class);
 
     public AppealController(AppealRepository appealRepository, AppealService appealService, MedicalCallCenterUserRepository medicalCallCenterUserRepository) {
         this.appealRepository = appealRepository;
@@ -54,8 +57,9 @@ public class AppealController {
     }
 
     @Get("/view/type/{type}/page/{page}/size/{size}")
-    public AppealPage findPage(String type, int page, int size) {
-        return this.appealService.pageByType(type, page, size, null);
+    public AppealPage findPage(Principal principal, String type, int page, int size) {
+        log.info("principal {}", principal.getName());
+        return this.appealService.pageByType(principal.getName(), type, page, size, null);
     }
 
     @Delete("{id}")

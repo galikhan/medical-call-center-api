@@ -11,6 +11,9 @@ import kz.medical.call.center.api.repository.MedicalCallCenterUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.List;
+
 
 @Singleton
 public class AuthProvider<T, I, S> implements AuthenticationProvider<T, I, S> {
@@ -36,8 +39,10 @@ public class AuthProvider<T, I, S> implements AuthenticationProvider<T, I, S> {
         logger.info("id {},  sec {}, user {}", id, sec, userOptional);
         if (userOptional.isPresent()) {
             var user = userOptional.get();
-//            var roles = List.of(user.getRole_());
-            return AuthenticationResponse.success(user.getUsername_());
+            var roles = List.of(user.getRole_());
+            var map = new HashMap<String, Object>();
+            map.put("id", user.getId_());
+            return AuthenticationResponse.success(user.getUsername_(), roles, map);
         } else {
             throw AuthenticationResponse.exception();
         }

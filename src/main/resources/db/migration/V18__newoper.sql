@@ -1,0 +1,2 @@
+insert into medical_call_center_user(role_, username_, password_,fullname_, organization_) values
+('operator', '111', '123', 'Мустафаева Айжан Бауыржанқызы', (select id_ from organization where name_ = 'call-center 1305'));

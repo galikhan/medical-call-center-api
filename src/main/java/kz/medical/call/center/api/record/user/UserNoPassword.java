@@ -1,15 +1,11 @@
 package kz.medical.call.center.api.record.user;
 
 import io.micronaut.serde.annotation.Serdeable;
-import kz.jooq.model.enums.GenderType;
 import kz.jooq.model.tables.records.MedicalCallCenterUserRecord;
 
-import java.time.LocalDate;
-
-import static kz.medical.call.center.api.util.DateUtil.fromIsoDateToString;
-
 @Serdeable
-public record UserNoPassword(Long id, String username, String iin, String firstname, String lastname, String role, String phone) {
+public record UserNoPassword(Long id, String username, String iin, String firstname, String lastname, String role,
+                             String phone, String fullname) {
     public static UserNoPassword to(MedicalCallCenterUserRecord record) {
         return new UserNoPassword(
                 record.getId_(),
@@ -18,11 +14,12 @@ public record UserNoPassword(Long id, String username, String iin, String firstn
                 record.getFirstname_(),
                 record.getLastname_(),
                 record.getRole_(),
-                record.getPhone_()
+                record.getPhone_(),
+                record.getFullname_()
         );
     }
 
-    public static UserNoPassword fromColumnsTo(Long id, String username, String iin, String firstname, String lastname, String role, String phone) {
+    public static UserNoPassword fromColumnsTo(Long id, String username, String iin, String firstname, String lastname, String role, String phone, String fullname) {
         return new UserNoPassword(
                 id,
                 username,
@@ -30,11 +27,12 @@ public record UserNoPassword(Long id, String username, String iin, String firstn
                 firstname,
                 lastname,
                 role,
-                phone
+                phone,
+                fullname
         );
     }
 
     public static UserNoPassword empty() {
-        return new UserNoPassword(null,null, null, null, null, null, null);
+        return new UserNoPassword(null, null, null, null, null, null, null, null);
     }
 }

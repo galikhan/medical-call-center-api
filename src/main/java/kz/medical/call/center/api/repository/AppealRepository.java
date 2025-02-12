@@ -132,6 +132,27 @@ public class AppealRepository {
                 .execute();
     }
 
+    public int totalByTypeAndOrganization(String type, Long organization) {
+        return this.dsl
+                .selectCount()
+                .from(APPEAL)
+                .where(APPEAL.TYPE_.eq(type))
+                .and(APPEAL.ORGANIZATION_.eq(organization))
+                .fetch().get(0).value1();
+    }
+
+    public List<Appeal> pageByTypeAndOrganization(String type, Long organization, int limit, int offset) {
+        return this.dsl
+                .selectFrom(APPEAL)
+                .where(APPEAL.IS_REMOVED_.eq(false))
+                .and(APPEAL.TYPE_.eq(type))
+                .and(APPEAL.ORGANIZATION_.eq(organization))
+                .orderBy(APPEAL.ID_.desc())
+                .limit(limit).offset(offset)
+                .stream()
+                .map(Appeal::to)
+                .collect(Collectors.toList());
+    }
     public int totalByType(String type) {
         return this.dsl
                 .selectCount()
