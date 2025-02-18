@@ -1,0 +1,1 @@
+create unique index uq_username on medical_call_center_user(username_);

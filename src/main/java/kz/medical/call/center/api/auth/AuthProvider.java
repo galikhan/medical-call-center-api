@@ -7,7 +7,7 @@ import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.provider.AuthenticationProvider;
 import jakarta.inject.Singleton;
-import kz.medical.call.center.api.repository.MedicalCallCenterUserRepository;
+import kz.medical.call.center.api.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +19,10 @@ import java.util.List;
 public class AuthProvider<T, I, S> implements AuthenticationProvider<T, I, S> {
 
     private Logger logger = LoggerFactory.getLogger(AuthProvider.class);
-    private MedicalCallCenterUserRepository medicalCallCenterUserRepository;
+    private UserRepository userRepository;
 
-    public AuthProvider(MedicalCallCenterUserRepository medicalCallCenterUserRepository) {
-        this.medicalCallCenterUserRepository = medicalCallCenterUserRepository;
+    public AuthProvider(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class AuthProvider<T, I, S> implements AuthenticationProvider<T, I, S> {
         var sec = authRequest.getSecret();
 //        var password = PasswordUtil.hashString(sec.toString());
         var password = sec.toString();
-        var userOptional = medicalCallCenterUserRepository.findByUsernameAndPassword(id.toString(), password);
+        var userOptional = userRepository.findByUsernameAndPassword(id.toString(), password);
 
         logger.info("id {},  sec {}, user {}", id, sec, userOptional);
         if (userOptional.isPresent()) {

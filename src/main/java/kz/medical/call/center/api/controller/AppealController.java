@@ -12,7 +12,7 @@ import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.Appeal;
 import kz.medical.call.center.api.repository.AppealRepository;
 import kz.medical.call.center.api.record.page.AppealPage;
-import kz.medical.call.center.api.repository.MedicalCallCenterUserRepository;
+import kz.medical.call.center.api.repository.UserRepository;
 import kz.medical.call.center.api.service.AppealService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,24 +25,24 @@ public class AppealController {
 
     public AppealRepository appealRepository;
     public AppealService appealService;
-    public MedicalCallCenterUserRepository medicalCallCenterUserRepository;
+    public UserRepository userRepository;
     private Logger log = LoggerFactory.getLogger(AppealController.class);
 
-    public AppealController(AppealRepository appealRepository, AppealService appealService, MedicalCallCenterUserRepository medicalCallCenterUserRepository) {
+    public AppealController(AppealRepository appealRepository, AppealService appealService, UserRepository userRepository) {
         this.appealRepository = appealRepository;
         this.appealService = appealService;
-        this.medicalCallCenterUserRepository = medicalCallCenterUserRepository;
+        this.userRepository = userRepository;
     }
 
     @Post
     public Appeal create(Principal principal, @Body Appeal appeal) {
-        var user = medicalCallCenterUserRepository.fetchUser(principal.getName());
+        var user = userRepository.fetchUser(principal.getName());
         return this.appealRepository.create(appeal, user.id());
     }
 
     @Put
     public Appeal update(Principal principal, @Body Appeal appeal) {
-        var user = medicalCallCenterUserRepository.fetchUser(principal.getName());
+        var user = userRepository.fetchUser(principal.getName());
         return this.appealRepository.update(appeal);
     }
 

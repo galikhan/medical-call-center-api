@@ -1,11 +1,10 @@
 package kz.medical.call.center.api.service;
 
-import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import kz.medical.call.center.api.record.Appeal;
 import kz.medical.call.center.api.record.page.AppealPage;
 import kz.medical.call.center.api.repository.AppealRepository;
-import kz.medical.call.center.api.repository.MedicalCallCenterUserRepository;
+import kz.medical.call.center.api.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,13 +18,13 @@ public class AppealService implements PaginationService<Appeal, AppealPage> {
 
     private static final Logger log = LoggerFactory.getLogger(AppealService.class);
     private AppealRepository appealRepository;
-    private MedicalCallCenterUserRepository medicalCallCenterUserRepository;
+    private UserRepository userRepository;
 
     public AppealService(AppealRepository appealRepository,
-                         MedicalCallCenterUserRepository medicalCallCenterUserRepository
+                         UserRepository userRepository
     ) {
         this.appealRepository = appealRepository;
-        this.medicalCallCenterUserRepository = medicalCallCenterUserRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -49,7 +48,7 @@ public class AppealService implements PaginationService<Appeal, AppealPage> {
             }
         }
 
-        var user = this.medicalCallCenterUserRepository.fetchUser(username);
+        var user = this.userRepository.fetchUser(username);
         var organization = user.organization();
         var total = 0;
         var data = new ArrayList<Appeal>();
@@ -65,7 +64,7 @@ public class AppealService implements PaginationService<Appeal, AppealPage> {
             data = (ArrayList<Appeal>) appealRepository.pageByParams(type, null, limit, offset, searchText, id);
         }
         var ownerIds = data.stream().map(row -> row.owner()).collect(Collectors.toUnmodifiableList());
-        var owners = this.medicalCallCenterUserRepository.findByIds(ownerIds);
+        var owners = this.userRepository.findByIds(ownerIds);
         var onwersMap = owners.stream().collect(Collectors.toMap(item -> item.id(), item -> item));
         return new AppealPage(total, data, onwersMap);
     }
