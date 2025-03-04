@@ -68,7 +68,7 @@ public class AsteriskApiService {
         });
     }
 
-    private String createFilepath(String recordingfile, LocalDateTime calldate) {
+    public String createFilepath(String recordingfile, LocalDateTime calldate) {
         var year = calldate.getYear();
         var month = returnFullValue(calldate.getMonthValue());
         var day = returnFullValue(calldate.getDayOfMonth());
