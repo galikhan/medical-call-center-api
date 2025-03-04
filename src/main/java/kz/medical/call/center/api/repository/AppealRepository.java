@@ -40,6 +40,7 @@ public class AppealRepository {
                 .set(APPEAL.DOCTOR_INFO_, appeal.doctorInfo())
                 .set(APPEAL.CATEGORY_, appeal.category())
                 .set(APPEAL.ACTS_TAKEN_, appeal.actsTaken())
+                .set(APPEAL.UNIQUEID_, appeal.uniqueId())
                 .returningResult(
                         APPEAL.ID_,
                         APPEAL.TYPE_,
@@ -53,7 +54,8 @@ public class AppealRepository {
                         APPEAL.IS_REMOVED_,
                         APPEAL.CATEGORY_,
                         APPEAL.DOCTOR_INFO_,
-                        APPEAL.ACTS_TAKEN_
+                        APPEAL.ACTS_TAKEN_,
+                        APPEAL.UNIQUEID_
                 ).fetchOne(mapping(Appeal::new));
     }
 
@@ -70,6 +72,7 @@ public class AppealRepository {
                 .set(APPEAL.DOCTOR_INFO_, appeal.doctorInfo())
                 .set(APPEAL.CATEGORY_, appeal.category())
                 .set(APPEAL.ACTS_TAKEN_, appeal.actsTaken())
+                .set(APPEAL.UNIQUEID_, appeal.uniqueId())
                 .where(APPEAL.ID_.eq(appeal.id()))
                 .returningResult(
                         APPEAL.ID_,
@@ -84,7 +87,8 @@ public class AppealRepository {
                         APPEAL.IS_REMOVED_,
                         APPEAL.CATEGORY_,
                         APPEAL.DOCTOR_INFO_,
-                        APPEAL.ACTS_TAKEN_
+                        APPEAL.ACTS_TAKEN_,
+                        APPEAL.UNIQUEID_
                 ).fetchOne(mapping(Appeal::new));
     }
 
@@ -173,5 +177,15 @@ public class AppealRepository {
             }
         }
         return searchQuery;
+    }
+
+    public List<Appeal> fetchAllWithUniqueId() {
+        return this.dsl
+                .selectFrom(APPEAL)
+                .where(APPEAL.IS_REMOVED_.eq(false))
+                .and(APPEAL.UNIQUEID_.isNotNull())
+                .stream()
+                .map(Appeal::to)
+                .collect(Collectors.toList());
     }
 }

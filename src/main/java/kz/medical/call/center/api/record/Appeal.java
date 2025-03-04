@@ -19,7 +19,8 @@ public record Appeal(Long id,
         ,
                      Long category,
                      String doctorInfo,
-                     String actsTaken
+                     String actsTaken,
+                     String uniqueId
 ) {
 
     public static Appeal to(AppealRecord record) {
@@ -35,11 +36,12 @@ public record Appeal(Long id,
                 record.getIsRemoved_(),
                 record.getCategory_(),
                 record.getDoctorInfo_(),
-                record.getActsTaken_()
+                record.getActsTaken_(),
+                record.getUniqueid_()
         );
     }
 
     public static Appeal empty() {
-        return new Appeal(null, null,null, null, null, null, null, null, null, null, null, null, null);
+        return new Appeal(null,null, null,null, null, null, null, null, null, null, null, null, null, null);
     }
 }

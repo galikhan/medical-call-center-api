@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 @CrossOrigin
 @Controller("/api/v1/dictionary")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class DictionaryController {
 
     private Logger log = LoggerFactory.getLogger(DictionaryController.class);

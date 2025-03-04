@@ -163,4 +163,15 @@ public class UserRepository {
     private int total() {
         return this.dsl.selectCount().from(MEDICAL_CALL_CENTER_USER).fetch().get(0).value1();
     }
+
+    public UserNoPassword findByPhone(String phone) {
+        var record = this.dsl
+                .selectFrom(MEDICAL_CALL_CENTER_USER)
+                .where(MEDICAL_CALL_CENTER_USER.PHONE_.eq(phone))
+                .fetchAny();
+//                .fetchOne()
+
+        return record != null ? UserNoPassword.to(record) : UserNoPassword.empty();
+    }
+
 }

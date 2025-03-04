@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.security.Principal;
 
 @Controller("/api/v1/appeal")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class AppealController {
 
     public AppealRepository appealRepository;

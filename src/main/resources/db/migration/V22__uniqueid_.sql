@@ -1,0 +1,1 @@
+alter table appeal add column uniqueid_ varchar(32);

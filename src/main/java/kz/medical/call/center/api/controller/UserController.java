@@ -20,7 +20,6 @@ import java.util.List;
 @CrossOrigin
 @Controller("/api/v1/user")
 @Secured(SecurityRule.IS_ANONYMOUS)
-
 public class UserController {
 
     private UserRepository userRepository;
@@ -53,6 +52,12 @@ public class UserController {
     @Get("/find/id/{id}")
     public UserNoPassword findByIin(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Get("/find/phone/{phone}")
+    public UserNoPassword findByPhone(String phone) {
+        return userRepository.findByPhone(phone);
     }
 
     @Get("/view/page/{page}/size/{size}")

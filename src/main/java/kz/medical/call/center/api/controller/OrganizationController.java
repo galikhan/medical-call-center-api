@@ -16,7 +16,7 @@ import java.util.List;
 
 @CrossOrigin
 @Controller("/api/v1/organization")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class OrganizationController {
 
     private Logger log = LoggerFactory.getLogger(OrganizationController.class);
