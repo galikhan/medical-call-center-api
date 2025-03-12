@@ -1,0 +1,1 @@
+alter table refresh_token rename creatd_ to created_;

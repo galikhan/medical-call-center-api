@@ -11,7 +11,7 @@ import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.MedicalCallCenterUser;
 import kz.medical.call.center.api.record.page.UserPage;
 import kz.medical.call.center.api.record.user.UserNoPassword;
-import kz.medical.call.center.api.repository.UserRepository;
+import kz.medical.call.center.api.repository.auth.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

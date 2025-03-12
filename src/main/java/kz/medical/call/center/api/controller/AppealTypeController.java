@@ -10,7 +10,7 @@ import kz.medical.call.center.api.repository.AppealTypeRepository;
 import java.util.List;
 
 @Controller("/api/v1/appeal-type")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class AppealTypeController {
 
     public AppealTypeRepository appealTypeRepository;

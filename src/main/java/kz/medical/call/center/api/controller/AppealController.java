@@ -12,7 +12,7 @@ import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.Appeal;
 import kz.medical.call.center.api.repository.AppealRepository;
 import kz.medical.call.center.api.record.page.AppealPage;
-import kz.medical.call.center.api.repository.UserRepository;
+import kz.medical.call.center.api.repository.auth.UserRepository;
 import kz.medical.call.center.api.service.AppealService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

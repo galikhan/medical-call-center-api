@@ -27,6 +27,7 @@ dependencies {
 
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.reactor:micronaut-reactor")
+//    implementation("io.micronaut.security:micronaut-security-token")
 
     implementation("io.micronaut.email:micronaut-email-javamail")
     implementation("io.micronaut.email:micronaut-email-template")

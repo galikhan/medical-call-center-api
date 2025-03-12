@@ -1,16 +1,13 @@
-package kz.medical.call.center.api.repository;
+package kz.medical.call.center.api.repository.auth;
 
 import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.MedicalCallCenterUserRecord;
-import kz.medical.call.center.api.record.Appeal;
 import kz.medical.call.center.api.record.MedicalCallCenterUser;
-import kz.medical.call.center.api.record.page.AppealPage;
 import kz.medical.call.center.api.record.page.UserPage;
 import kz.medical.call.center.api.record.user.UserNoPassword;
 import kz.medical.call.center.api.util.PasswordUtil;
 import org.jooq.DSLContext;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,7 +34,6 @@ public class UserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.FIRSTNAME_, user.firstname())
                 .set(MEDICAL_CALL_CENTER_USER.LASTNAME_, user.lastname())
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
-                .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
                 .set(MEDICAL_CALL_CENTER_USER.FULLNAME_, user.fullname())
                 .set(MEDICAL_CALL_CENTER_USER.ORGANIZATION_, user.organization())
                 .returningResult(
@@ -47,7 +43,6 @@ public class UserRepository {
                         MEDICAL_CALL_CENTER_USER.FIRSTNAME_,
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
                         MEDICAL_CALL_CENTER_USER.ROLE_,
-                        MEDICAL_CALL_CENTER_USER.PHONE_,
                         MEDICAL_CALL_CENTER_USER.FULLNAME_,
                         MEDICAL_CALL_CENTER_USER.ORGANIZATION_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
@@ -62,7 +57,6 @@ public class UserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.FIRSTNAME_, user.firstname())
                 .set(MEDICAL_CALL_CENTER_USER.LASTNAME_, user.lastname())
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
-                .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
                 .set(MEDICAL_CALL_CENTER_USER.FULLNAME_, user.fullname())
                 .set(MEDICAL_CALL_CENTER_USER.ORGANIZATION_, user.organization())
                 .where(MEDICAL_CALL_CENTER_USER.ID_.eq(user.id()))
@@ -73,7 +67,6 @@ public class UserRepository {
                         MEDICAL_CALL_CENTER_USER.FIRSTNAME_,
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
                         MEDICAL_CALL_CENTER_USER.ROLE_,
-                        MEDICAL_CALL_CENTER_USER.PHONE_,
                         MEDICAL_CALL_CENTER_USER.FULLNAME_,
                         MEDICAL_CALL_CENTER_USER.ORGANIZATION_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
@@ -169,8 +162,6 @@ public class UserRepository {
                 .selectFrom(MEDICAL_CALL_CENTER_USER)
                 .where(MEDICAL_CALL_CENTER_USER.PHONE_.eq(phone))
                 .fetchAny();
-//                .fetchOne()
-
         return record != null ? UserNoPassword.to(record) : UserNoPassword.empty();
     }
 

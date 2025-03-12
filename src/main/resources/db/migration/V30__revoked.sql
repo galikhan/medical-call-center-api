@@ -1,0 +1,1 @@
+alter table refresh_token add column is_revoked_ boolean default false;
