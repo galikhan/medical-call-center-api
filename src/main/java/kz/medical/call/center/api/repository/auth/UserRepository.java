@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static kz.jooq.model.tables.MedicalCallCenterUser.MEDICAL_CALL_CENTER_USER;
+import static kz.jooq.model.tables.UserPhone.USER_PHONE;
 import static org.jooq.Records.mapping;
 
 @Singleton
@@ -36,6 +37,7 @@ public class UserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
                 .set(MEDICAL_CALL_CENTER_USER.FULLNAME_, user.fullname())
                 .set(MEDICAL_CALL_CENTER_USER.ORGANIZATION_, user.organization())
+                .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
                 .returningResult(
                         MEDICAL_CALL_CENTER_USER.ID_,
                         MEDICAL_CALL_CENTER_USER.USERNAME_,
@@ -44,7 +46,8 @@ public class UserRepository {
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
                         MEDICAL_CALL_CENTER_USER.ROLE_,
                         MEDICAL_CALL_CENTER_USER.FULLNAME_,
-                        MEDICAL_CALL_CENTER_USER.ORGANIZATION_
+                        MEDICAL_CALL_CENTER_USER.ORGANIZATION_,
+                        MEDICAL_CALL_CENTER_USER.PHONE_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
     }
 
@@ -59,6 +62,7 @@ public class UserRepository {
                 .set(MEDICAL_CALL_CENTER_USER.ROLE_, user.role())
                 .set(MEDICAL_CALL_CENTER_USER.FULLNAME_, user.fullname())
                 .set(MEDICAL_CALL_CENTER_USER.ORGANIZATION_, user.organization())
+                .set(MEDICAL_CALL_CENTER_USER.PHONE_, user.phone())
                 .where(MEDICAL_CALL_CENTER_USER.ID_.eq(user.id()))
                 .returningResult(
                         MEDICAL_CALL_CENTER_USER.ID_,
@@ -68,7 +72,8 @@ public class UserRepository {
                         MEDICAL_CALL_CENTER_USER.LASTNAME_,
                         MEDICAL_CALL_CENTER_USER.ROLE_,
                         MEDICAL_CALL_CENTER_USER.FULLNAME_,
-                        MEDICAL_CALL_CENTER_USER.ORGANIZATION_
+                        MEDICAL_CALL_CENTER_USER.ORGANIZATION_,
+                        MEDICAL_CALL_CENTER_USER.PHONE_
                 ).fetchOne(mapping(UserNoPassword::fromColumnsTo));
 
 
@@ -159,9 +164,11 @@ public class UserRepository {
 
     public UserNoPassword findByPhone(String phone) {
         var record = this.dsl
-                .selectFrom(MEDICAL_CALL_CENTER_USER)
-                .where(MEDICAL_CALL_CENTER_USER.PHONE_.eq(phone))
-                .fetchAny();
+                .select(MEDICAL_CALL_CENTER_USER.fields())
+                .from(MEDICAL_CALL_CENTER_USER).join(USER_PHONE)
+                .on(MEDICAL_CALL_CENTER_USER.ID_.eq(USER_PHONE.USER_))
+                .where(USER_PHONE.PHONE_.eq(phone))
+                .fetchAnyInto(MEDICAL_CALL_CENTER_USER);
         return record != null ? UserNoPassword.to(record) : UserNoPassword.empty();
     }
 

@@ -5,7 +5,7 @@ import kz.jooq.model.tables.records.MedicalCallCenterUserRecord;
 
 @Serdeable
 public record UserNoPassword(Long id, String username, String iin, String firstname, String lastname, String role,
-                             String fullname, Long organization) {
+                             String fullname, Long organization, String phone) {
     public static UserNoPassword to(MedicalCallCenterUserRecord record) {
         return new UserNoPassword(
                 record.getId_(),
@@ -15,11 +15,12 @@ public record UserNoPassword(Long id, String username, String iin, String firstn
                 record.getLastname_(),
                 record.getRole_(),
                 record.getFullname_(),
-                record.getOrganization_()
+                record.getOrganization_(),
+                record.getPhone_()
         );
     }
 
-    public static UserNoPassword fromColumnsTo(Long id, String username, String iin, String firstname, String lastname, String role, String fullname, Long organization) {
+    public static UserNoPassword fromColumnsTo(Long id, String username, String iin, String firstname, String lastname, String role, String fullname, Long organization, String phone) {
         return new UserNoPassword(
                 id,
                 username,
@@ -28,11 +29,12 @@ public record UserNoPassword(Long id, String username, String iin, String firstn
                 lastname,
                 role,
                 fullname,
-                organization
+                organization,
+                phone
         );
     }
 
     public static UserNoPassword empty() {
-        return new UserNoPassword(null, null, null, null, null, null,  null, null);
+        return new UserNoPassword(null, null, null, null, null, null, null,  null, null);
     }
 }

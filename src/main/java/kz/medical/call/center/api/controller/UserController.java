@@ -11,7 +11,10 @@ import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.MedicalCallCenterUser;
 import kz.medical.call.center.api.record.page.UserPage;
 import kz.medical.call.center.api.record.user.UserNoPassword;
+import kz.medical.call.center.api.record.user.UserWithPhones;
+import kz.medical.call.center.api.repository.UserPhoneRepository;
 import kz.medical.call.center.api.repository.auth.UserRepository;
+import kz.medical.call.center.api.service.auth.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,10 +26,12 @@ import java.util.List;
 public class UserController {
 
     private UserRepository userRepository;
+    private UserService userService;
     private Logger log = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Post
@@ -40,8 +45,8 @@ public class UserController {
     }
 
     @Get("/find/iin/{iin}")
-    public UserNoPassword findByIin(String iin) {
-        return userRepository.findByIin(iin);
+    public UserWithPhones findByIin(String iin) {
+        return userService.findByIin(iin);
     }
 
     @Get("/find/role/{role}")
@@ -56,8 +61,8 @@ public class UserController {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Get("/find/phone/{phone}")
-    public UserNoPassword findByPhone(String phone) {
-        return userRepository.findByPhone(phone);
+    public UserWithPhones findByPhone(String phone) {
+        return userService.findByPhone(phone);
     }
 
     @Get("/view/page/{page}/size/{size}")

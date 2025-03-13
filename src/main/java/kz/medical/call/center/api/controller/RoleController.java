@@ -5,7 +5,6 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.Role;
-import kz.medical.call.center.api.record.user.UserNoPassword;
 import kz.medical.call.center.api.repository.RoleRepository;
 
 import java.util.List;

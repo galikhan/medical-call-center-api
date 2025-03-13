@@ -1,36 +1,30 @@
 package kz.medical.call.center.api.service.auth;
 
+import io.micronaut.core.annotation.Blocking;
 import io.micronaut.security.authentication.Authentication;
-import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.token.event.RefreshTokenGeneratedEvent;
 import io.micronaut.security.token.generator.AccessRefreshTokenGenerator;
 import io.micronaut.security.token.refresh.RefreshTokenPersistence;
 import io.micronaut.security.token.render.BearerAccessRefreshToken;
 import jakarta.inject.Singleton;
-import kz.jooq.model.tables.records.RefreshTokenRecord;
-import kz.medical.call.center.api.controller.UserController;
 import kz.medical.call.center.api.repository.auth.RefreshTokenRepository;
 import kz.medical.call.center.api.repository.auth.UserRepository;
-import org.jooq.DSLContext;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
-import static kz.jooq.model.tables.RefreshToken.REFRESH_TOKEN;
-
+@Blocking
 @Singleton
 public class RefreshTokenService implements RefreshTokenPersistence {
 
     private static final Logger log = LoggerFactory.getLogger(RefreshTokenService.class);
+    private final AccessRefreshTokenGenerator tokenGenerator;
     private RefreshTokenRepository refreshTokenRepository;
     private UserRepository userRepository;
-    private final AccessRefreshTokenGenerator tokenGenerator;
 
     public RefreshTokenService(AccessRefreshTokenGenerator tokenGenerator, UserRepository userRepository, RefreshTokenRepository refreshTokenRepository) {
         this.tokenGenerator = tokenGenerator;
@@ -49,7 +43,7 @@ public class RefreshTokenService implements RefreshTokenPersistence {
         log.info("getAuthentication refreshToken {}", refreshToken);
         return Flux.create(emitter -> {
             var opt = this.refreshTokenRepository.findByToken(refreshToken);
-            if(opt.isPresent()) {
+            if (opt.isPresent()) {
                 var token = opt.get();
                 emitter.next(Authentication.build(token.getUsername_()));
                 emitter.complete();
@@ -61,7 +55,7 @@ public class RefreshTokenService implements RefreshTokenPersistence {
 
     public BearerAccessRefreshToken handleRefreshToken(String refreshToken) {
         var optToken = this.refreshTokenRepository.findByToken(refreshToken);
-        if(optToken.isEmpty()) {
+        if (optToken.isEmpty()) {
             throw new RuntimeException("Invalid refresh token");
         }
         var token = optToken.get();

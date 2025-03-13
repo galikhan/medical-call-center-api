@@ -29,7 +29,6 @@ public class RefreshTokenRepository {
     }
 
     public void persistToken(RefreshTokenGeneratedEvent event) {
-        log.info("persistToken called {}", event.getRefreshToken());
         this.ctx.insertInto(REFRESH_TOKEN)
                 .set(REFRESH_TOKEN.USERNAME_, event.getAuthentication().getName())
                 .set(REFRESH_TOKEN.REFRESH_TOKEN_, event.getRefreshToken())

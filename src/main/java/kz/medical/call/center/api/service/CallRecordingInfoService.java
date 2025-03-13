@@ -34,20 +34,24 @@ public class CallRecordingInfoService {
         this.asteriskApiService.fetchByUniqueId(uniqueId).subscribe(
                 listOfCdr -> {
                     log.info("listOfCdr size = {}", listOfCdr.size());
-                    var cdr = listOfCdr.get(0);
-                    log.info("cdr {}", cdr);
-                    var opt = this.callRecordingInfoRepository.findRecordByAppealId(appealId);
-                    if (opt.isEmpty()) {
-                        var filepath = asteriskApiService.createFilepath(cdr.recordingfile(), cdr.calldate());
-                        var callRecordingInfo = new CallRecordingInfo(null, appealId, cdr.uniqueid(), cdr.recordingfile(), cdr.calldate(), filepath);
-                        var result = this.callRecordingInfoRepository.create(callRecordingInfo);
-                        future.complete(result);
+                    if(listOfCdr.size() > 0) {
+                        var cdr = listOfCdr.get(0);
+                        log.info("cdr {}", cdr);
+                        var opt = this.callRecordingInfoRepository.findRecordByAppealId(appealId);
+                        if (opt.isEmpty()) {
+                            var filepath = asteriskApiService.createFilepath(cdr.recordingfile(), cdr.calldate());
+                            var callRecordingInfo = new CallRecordingInfo(null, appealId, cdr.uniqueid(), cdr.recordingfile(), cdr.calldate(), filepath);
+                            var result = this.callRecordingInfoRepository.create(callRecordingInfo);
+                            future.complete(result);
+                        } else {
+                            var record = opt.get();
+                            var filepath = asteriskApiService.createFilepath(cdr.recordingfile(), cdr.calldate());
+                            var callRecordingInfo = new CallRecordingInfo(record.getId_(), record.getAppeal_(), record.getUniqueid_(), record.getRecordingFile_(), record.getCalldate_(), filepath);
+                            var result = this.callRecordingInfoRepository.update(callRecordingInfo);
+                            future.complete(result);
+                        }
                     } else {
-                        var record = opt.get();
-                        var filepath = asteriskApiService.createFilepath(cdr.recordingfile(), cdr.calldate());
-                        var callRecordingInfo = new CallRecordingInfo(record.getId_(), record.getAppeal_(), record.getUniqueid_(), record.getRecordingFile_(), record.getCalldate_(), filepath);
-                        var result = this.callRecordingInfoRepository.update(callRecordingInfo);
-                        future.complete(result);
+                        log.warn("cannon find call recording by uniqueid {}", uniqueId);
                     }
                 });
         return future.get();
