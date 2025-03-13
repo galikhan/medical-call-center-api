@@ -28,13 +28,16 @@ micronaut:
     authentication: bearer
     token:
       jwt:
-        signatures:
-          secret:
-            generator:
-              secret: pGQBb6zEGh/RUcAYPDNbiopn0polsyfCy3C9RmdiXMAY/p0aNSQRlsszywVVSnz2
+        generator:
+          access-token:
+            secret: pGQBb6zEGh/RUcAYPDNbiopn0polsyfCy3C9RmdiXMAY/p0aNSQRlsszywVVSnz2
+          refresh-token:
+            expiration: 604800
+            secret: pGQBb6zEGh/RUcAYPDNbiopn0polsyfCy3C9RmdiXMAY/p0aNSQRlsszywVVSnz2
       generator:
         access-token:
-          expiration: 43200 #4 days
+          expiration: 43200
+
 
 
 flyway:
