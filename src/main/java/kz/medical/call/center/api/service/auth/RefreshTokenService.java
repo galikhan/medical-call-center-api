@@ -19,7 +19,6 @@ import java.util.List;
 
 @Blocking
 @Singleton
-@Blocking
 public class RefreshTokenService implements RefreshTokenPersistence {
 
     private static final Logger log = LoggerFactory.getLogger(RefreshTokenService.class);

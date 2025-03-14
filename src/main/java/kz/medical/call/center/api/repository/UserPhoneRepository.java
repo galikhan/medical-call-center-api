@@ -2,7 +2,7 @@ package kz.medical.call.center.api.repository;
 
 
 import jakarta.inject.Singleton;
-import kz.medical.call.center.api.record.Appeal;
+import kz.jooq.model.tables.records.UserPhoneRecord;
 import kz.medical.call.center.api.record.UserPhone;
 import org.jooq.DSLContext;
 import org.slf4j.Logger;
@@ -58,4 +58,14 @@ public class UserPhoneRepository {
                 .fetch().stream().map(UserPhone::to)
                 .collect(Collectors.toUnmodifiableList());
     }
+
+    public UserPhoneRecord findByUserAndPhone(Long userId, String phone) {
+        return this.ctx
+                .selectFrom(USER_PHONE)
+                .where(USER_PHONE.USER_.eq(userId))
+                .and(USER_PHONE.PHONE_.eq(phone))
+                .fetchAny();
+    }
+
+
 }

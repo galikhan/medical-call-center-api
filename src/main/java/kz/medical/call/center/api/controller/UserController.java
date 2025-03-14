@@ -35,13 +35,13 @@ public class UserController {
     }
 
     @Post
-    public UserNoPassword create(@Body MedicalCallCenterUser user) {
-        return userRepository.create(user);
+    public UserWithPhones create(@Body MedicalCallCenterUser user) {
+        return userService.create(user);
     }
 
     @Put
-    public UserNoPassword update(@Body MedicalCallCenterUser user) {
-        return userRepository.update(user);
+    public UserWithPhones update(@Body MedicalCallCenterUser user) {
+        return userService.update(user);
     }
 
     @Get("/find/iin/{iin}")
@@ -55,8 +55,8 @@ public class UserController {
     }
 
     @Get("/find/id/{id}")
-    public UserNoPassword findByIin(Long id) {
-        return userRepository.findById(id);
+    public UserWithPhones findByIin(Long id) {
+        return userService.findById(id);
     }
 
     @Secured(SecurityRule.IS_ANONYMOUS)
