@@ -4,6 +4,7 @@ import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.AppealRecord;
 import kz.medical.call.center.api.record.Appeal;
+import kz.medical.call.center.api.record.report.AppealAmount;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static kz.jooq.model.tables.Appeal.APPEAL;
 import static org.jooq.Records.mapping;
+import static org.jooq.impl.DSL.*;
 
 @Singleton
 public class AppealRepository {
@@ -171,9 +173,9 @@ public class AppealRepository {
 
         if(StringUtils.isNotEmpty(searchText)) {
             if (id != null) {
-                searchQuery = searchQuery.and(APPEAL.ID_.eq(id).or(DSL.lower(APPEAL.DESCRIPTION_).contains(searchText.toLowerCase())));
+                searchQuery = searchQuery.and(APPEAL.ID_.eq(id).or(lower(APPEAL.DESCRIPTION_).contains(searchText.toLowerCase())));
             } else {
-                searchQuery = searchQuery.and(DSL.lower(APPEAL.DESCRIPTION_).contains(searchText.toLowerCase()));
+                searchQuery = searchQuery.and(lower(APPEAL.DESCRIPTION_).contains(searchText.toLowerCase()));
             }
         }
         return searchQuery;
@@ -187,5 +189,21 @@ public class AppealRepository {
                 .stream()
                 .map(Appeal::to)
                 .collect(Collectors.toList());
+    }
+
+    public AppealAmount calcAppealAmountByMonth(int month) {
+        return this.dsl.select(
+                count(case_().when(APPEAL.TYPE_.eq("complaint"), 1).else_((Integer) null)),
+                count(case_().when(APPEAL.TYPE_.eq("thanks"), 1).else_((Integer) null)),
+                count(case_().when(APPEAL.TYPE_.eq("proposal"), 1).else_((Integer) null)),
+                count()
+        ).from(APPEAL).where(DSL.month(APPEAL.APPEAL_DATE_).eq(month))
+                .fetchSingle()
+                .map(item -> new AppealAmount(
+                        item.get(0, Integer.class),
+                        item.get(1, Integer.class),
+                        item.get(2, Integer.class),
+                        item.get(3, Integer.class)
+                ));
     }
 }
