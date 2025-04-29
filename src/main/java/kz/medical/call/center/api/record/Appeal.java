@@ -20,7 +20,8 @@ public record Appeal(Long id,
                      Long category,
                      String doctorInfo,
                      String actsTaken,
-                     String uniqueId
+                     String uniqueId,
+                     Boolean isManually
 ) {
 
     public static Appeal to(AppealRecord record) {
@@ -37,11 +38,12 @@ public record Appeal(Long id,
                 record.getCategory_(),
                 record.getDoctorInfo_(),
                 record.getActsTaken_(),
-                record.getUniqueid_()
+                record.getUniqueid_(),
+                record.getIsManuallyCreated_()
         );
     }
 
     public static Appeal empty() {
-        return new Appeal(null,null, null,null, null, null, null, null, null, null, null, null, null, null);
+        return new Appeal(null,null,null, null,null, null, null, null, null, null, null, null, null, null, null);
     }
 }

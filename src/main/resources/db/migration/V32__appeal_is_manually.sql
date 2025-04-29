@@ -1,0 +1,1 @@
+alter table appeal add column is_manually_created_ boolean default false;

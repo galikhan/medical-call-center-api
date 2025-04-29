@@ -45,6 +45,7 @@ public class AppealRepository {
                 .set(APPEAL.CATEGORY_, appeal.category())
                 .set(APPEAL.ACTS_TAKEN_, appeal.actsTaken())
                 .set(APPEAL.UNIQUEID_, appeal.uniqueId())
+                .set(APPEAL.IS_MANUALLY_CREATED_, appeal.isManually())
                 .returningResult(
                         APPEAL.ID_,
                         APPEAL.TYPE_,
@@ -59,7 +60,8 @@ public class AppealRepository {
                         APPEAL.CATEGORY_,
                         APPEAL.DOCTOR_INFO_,
                         APPEAL.ACTS_TAKEN_,
-                        APPEAL.UNIQUEID_
+                        APPEAL.UNIQUEID_,
+                        APPEAL.IS_MANUALLY_CREATED_
                 ).fetchOne(mapping(Appeal::new));
     }
 
@@ -77,6 +79,7 @@ public class AppealRepository {
                 .set(APPEAL.CATEGORY_, appeal.category())
                 .set(APPEAL.ACTS_TAKEN_, appeal.actsTaken())
                 .set(APPEAL.UNIQUEID_, appeal.uniqueId())
+                .set(APPEAL.IS_MANUALLY_CREATED_, appeal.isManually())
                 .where(APPEAL.ID_.eq(appeal.id()))
                 .returningResult(
                         APPEAL.ID_,
@@ -92,7 +95,8 @@ public class AppealRepository {
                         APPEAL.CATEGORY_,
                         APPEAL.DOCTOR_INFO_,
                         APPEAL.ACTS_TAKEN_,
-                        APPEAL.UNIQUEID_
+                        APPEAL.UNIQUEID_,
+                        APPEAL.IS_MANUALLY_CREATED_
                 ).fetchOne(mapping(Appeal::new));
     }
 
