@@ -1,9 +1,9 @@
 package kz.medical.call.center.api.external;
 
-import io.micronaut.core.annotation.Blocking;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.HttpClient;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Singleton;
 import kz.medical.call.center.api.external.record.Cdr;
 import kz.medical.call.center.api.record.CallRecordingInfo;
@@ -16,15 +16,17 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static io.micronaut.scheduling.TaskExecutors.BLOCKING;
+
 @Singleton
-@Blocking
+@ExecuteOn(BLOCKING)
 public class AsteriskApiService {
 
     private static final Logger log = LoggerFactory.getLogger(AsteriskApiService.class);
+    private final AppealRepository appealRepository;
+    private final CallRecordingInfoRepository callRecordingInfoRepository;
     public String apiUrl = "http://89.35.124.139:8080";
     public HttpClient httpClient;
-    private AppealRepository appealRepository;
-    private CallRecordingInfoRepository callRecordingInfoRepository;
 
     public AsteriskApiService(AppealRepository appealRepository, HttpClient httpClient, CallRecordingInfoRepository callRecordingInfoRepository) {
         this.appealRepository = appealRepository;
@@ -40,8 +42,8 @@ public class AsteriskApiService {
 
     public void fetch() {
 
-        var appeals = this.appealRepository.fetchAllWithUniqueId();
-        appeals.stream().forEach(appeal ->
+        var appeals = this.appealRepository.fetchAllWithUniqueIdForToday();
+        appeals.forEach(appeal ->
         {
             log.info("start fetch {}", appeal.uniqueId());
             fetchByUniqueId(appeal.uniqueId())
@@ -49,7 +51,7 @@ public class AsteriskApiService {
                             listOfCdr -> {
                                 log.info("fetch size {}", listOfCdr.size());
 
-                                listOfCdr.stream().forEach(cdr -> {
+                                listOfCdr.forEach(cdr -> {
                                     log.info("cdr {}", cdr.uniqueid());
                                     var opt = this.callRecordingInfoRepository.findRecordByAppealId(appeal.id());
                                     if (opt.isEmpty()) {

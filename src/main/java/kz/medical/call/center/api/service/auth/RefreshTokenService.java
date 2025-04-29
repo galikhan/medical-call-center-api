@@ -1,6 +1,7 @@
 package kz.medical.call.center.api.service.auth;
 
 import io.micronaut.core.annotation.Blocking;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.token.event.RefreshTokenGeneratedEvent;
 import io.micronaut.security.token.generator.AccessRefreshTokenGenerator;
@@ -17,8 +18,10 @@ import reactor.core.publisher.FluxSink;
 
 import java.util.List;
 
-@Blocking
+import static io.micronaut.scheduling.TaskExecutors.BLOCKING;
+
 @Singleton
+@ExecuteOn(BLOCKING)
 public class RefreshTokenService implements RefreshTokenPersistence {
 
     private static final Logger log = LoggerFactory.getLogger(RefreshTokenService.class);

@@ -1,6 +1,6 @@
 package kz.medical.call.center.api.service;
 
-import io.micronaut.core.annotation.Blocking;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Singleton;
 import kz.medical.call.center.api.external.AsteriskApiService;
 import kz.medical.call.center.api.record.CallRecordingInfo;
@@ -11,13 +11,15 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import static io.micronaut.scheduling.TaskExecutors.BLOCKING;
+
 @Singleton
-@Blocking
+@ExecuteOn(BLOCKING)
 public class CallRecordingInfoService {
 
     private static final Logger log = LoggerFactory.getLogger(CallRecordingInfoService.class);
-    private CallRecordingInfoRepository callRecordingInfoRepository;
-    private AsteriskApiService asteriskApiService;
+    private final CallRecordingInfoRepository callRecordingInfoRepository;
+    private final AsteriskApiService asteriskApiService;
 
     public CallRecordingInfoService(CallRecordingInfoRepository callRecordingInfoRepository, AsteriskApiService asteriskApiService) {
         this.callRecordingInfoRepository = callRecordingInfoRepository;
@@ -34,7 +36,7 @@ public class CallRecordingInfoService {
         this.asteriskApiService.fetchByUniqueId(uniqueId).subscribe(
                 listOfCdr -> {
                     log.info("listOfCdr size = {}", listOfCdr.size());
-                    if(listOfCdr.size() > 0) {
+                    if (!listOfCdr.isEmpty()) {
                         var cdr = listOfCdr.get(0);
                         log.info("cdr {}", cdr);
                         var opt = this.callRecordingInfoRepository.findRecordByAppealId(appealId);

@@ -1,0 +1,2 @@
+delete from user_phone;
+insert into user_phone(user_, phone_, created_) (select id_, phone_, created_ from medical_call_center_user);

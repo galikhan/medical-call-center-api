@@ -26,4 +26,10 @@ public class AsteriskApiController {
         this.asteriskServiceApi.fetch();
     }
 
+
+    @Get("/unique-id/{uniqueId}")
+    public void fetchByUniqueId(String uniqueId) {
+        this.asteriskServiceApi.fetchByUniqueId(uniqueId);
+    }
+
 }

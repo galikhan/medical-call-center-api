@@ -3,6 +3,7 @@ package kz.medical.call.center.api.controller;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.CallRecordingInfo;
@@ -13,12 +14,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutionException;
 
+import static io.micronaut.scheduling.TaskExecutors.BLOCKING;
+
 @Controller("/api/v1/call-recording-info")
 @Secured(SecurityRule.IS_ANONYMOUS)
+@ExecuteOn(BLOCKING)
 public class CallRecordingInfoController {
 
     private static final Logger log = LoggerFactory.getLogger(CallRecordingInfoController.class);
-    private CallRecordingInfoService callRecordingInfoService;
+    private final CallRecordingInfoService callRecordingInfoService;
 
     public CallRecordingInfoController(CallRecordingInfoService callRecordingInfoService) {
         this.callRecordingInfoService = callRecordingInfoService;

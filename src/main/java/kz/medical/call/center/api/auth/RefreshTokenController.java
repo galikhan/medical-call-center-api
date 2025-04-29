@@ -5,6 +5,7 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.server.cors.CrossOrigin;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
@@ -15,9 +16,12 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static io.micronaut.scheduling.TaskExecutors.BLOCKING;
+
 @CrossOrigin
 @Controller("/refresh-token")
 @Secured(SecurityRule.IS_ANONYMOUS)
+@ExecuteOn(BLOCKING)
 public class RefreshTokenController {
 
 

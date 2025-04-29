@@ -6,6 +6,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Put;
 import io.micronaut.http.server.cors.CrossOrigin;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.record.MedicalCallCenterUser;
@@ -20,14 +21,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static io.micronaut.scheduling.TaskExecutors.BLOCKING;
+
 @CrossOrigin
 @Controller("/api/v1/user")
 @Secured(SecurityRule.IS_ANONYMOUS)
+@ExecuteOn(BLOCKING)
 public class UserController {
 
-    private UserRepository userRepository;
-    private UserService userService;
-    private Logger log = LoggerFactory.getLogger(UserController.class);
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;

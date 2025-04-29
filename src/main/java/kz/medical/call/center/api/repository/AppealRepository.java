@@ -9,6 +9,8 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -182,10 +184,34 @@ public class AppealRepository {
     }
 
     public List<Appeal> fetchAllWithUniqueId() {
+        // @TODO fetch for today only
         return this.dsl
                 .selectFrom(APPEAL)
                 .where(APPEAL.IS_REMOVED_.eq(false))
                 .and(APPEAL.UNIQUEID_.isNotNull())
+//                .and(DSL.to(APPEAL.CREATED_).eq())
+                .stream()
+                .map(Appeal::to)
+                .collect(Collectors.toList());
+    }
+
+    public List<Appeal> fetchAllWithUniqueIdForToday() {
+        return this.dsl
+                .selectFrom(APPEAL)
+                .where(APPEAL.IS_REMOVED_.eq(false))
+                .and(APPEAL.UNIQUEID_.isNotNull())
+                .and(APPEAL.CREATED_.cast(Date.class).eq(currentDate()))
+                .stream()
+                .map(Appeal::to)
+                .collect(Collectors.toList());
+    }
+
+    public List<Appeal> fetchAllWithUniqueIdForYesterday() {
+        return this.dsl
+                .selectFrom(APPEAL)
+                .where(APPEAL.IS_REMOVED_.eq(false))
+                .and(APPEAL.UNIQUEID_.isNotNull())
+                .and(APPEAL.CREATED_.cast(Date.class).eq(currentDate()))
                 .stream()
                 .map(Appeal::to)
                 .collect(Collectors.toList());

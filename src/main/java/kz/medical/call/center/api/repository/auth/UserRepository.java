@@ -19,7 +19,7 @@ import static org.jooq.Records.mapping;
 @Singleton
 public class UserRepository {
 
-    private DSLContext dsl;
+    private final DSLContext dsl;
 
     public UserRepository(DSLContext dsl) {
         this.dsl = dsl;
@@ -114,7 +114,7 @@ public class UserRepository {
                 .selectFrom(MEDICAL_CALL_CENTER_USER)
                 .where(MEDICAL_CALL_CENTER_USER.IIN_.eq(iin))
                 .fetchOptional();
-        return opt.isPresent() ? UserNoPassword.to(opt.get()) : UserNoPassword.empty();
+        return opt.map(UserNoPassword::to).orElseGet(UserNoPassword::empty);
     }
 
     public List<UserNoPassword> findByRole(String role) {
@@ -122,7 +122,7 @@ public class UserRepository {
                 .selectFrom(MEDICAL_CALL_CENTER_USER)
                 .where(MEDICAL_CALL_CENTER_USER.ROLE_.eq(role))
                 .fetch().stream().map(UserNoPassword::to)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     public UserNoPassword findById(Long id) {
@@ -151,7 +151,7 @@ public class UserRepository {
                 .selectFrom(MEDICAL_CALL_CENTER_USER)
                 .limit(limit).offset(offset)
                 .fetch().stream().map(UserNoPassword::to)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     private int total() {

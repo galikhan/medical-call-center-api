@@ -29,25 +29,14 @@ public class HelloWorldController {
     {
         var preNow = LocalDateTime.now();
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Almaty"));
-//        TimeZone.
         LocalDateTime now = LocalDateTime.now();
         ZoneId.getAvailableZoneIds().stream().filter(item -> item.contains("Almaty"))
                 .forEach(zone -> {
-//                    System.out.println(zone);
                     var timezone = TimeZone.getTimeZone(zone);
                     System.out.println(zone);
                     System.out.println(timezone.getDisplayName());
-//                    System.out.println(timezone.getOffset());
                     System.out.println(timezone.getOffset(LocalDateTime.now().getLong(ChronoField.HOUR_OF_DAY)));
-
-//                    System.out.println(timezone.getOffset(LocalDateTime.now().getLong(ChronoField.DAY_OF_YEAR)));
                 });
-//                .map(ZoneId::of)
-////                .sorted(new ZoneComparator())
-//                .map(id -> String.format(
-//                        "(%s%s) %s",
-//                        base, getOffset(now, id), id.getId()))
-//                .collect(Collectors.toList());
 
         return "hello world and current time  pre - "+ preNow+" after: " + LocalDateTime.now();
 
