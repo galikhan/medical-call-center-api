@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class DictionaryController {
 
-    private Logger log = LoggerFactory.getLogger(DictionaryController.class);
-    private DictionaryRepository dictionaryRepository;
+    private final Logger log = LoggerFactory.getLogger(DictionaryController.class);
+    private final DictionaryRepository dictionaryRepository;
 
     public DictionaryController(DictionaryRepository dictionaryRepository) {
         this.dictionaryRepository = dictionaryRepository;

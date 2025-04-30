@@ -26,7 +26,7 @@ public class AppealController {
     public AppealRepository appealRepository;
     public AppealService appealService;
     public UserRepository userRepository;
-    private Logger log = LoggerFactory.getLogger(AppealController.class);
+    private final Logger log = LoggerFactory.getLogger(AppealController.class);
 
     public AppealController(AppealRepository appealRepository, AppealService appealService, UserRepository userRepository) {
         this.appealRepository = appealRepository;

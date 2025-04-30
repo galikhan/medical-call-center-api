@@ -2,6 +2,7 @@ package kz.medical.call.center.api.service;
 
 import jakarta.inject.Singleton;
 import kz.medical.call.center.api.record.Appeal;
+import kz.medical.call.center.api.record.MedicalCallCenterUser;
 import kz.medical.call.center.api.record.page.AppealPage;
 import kz.medical.call.center.api.repository.AppealRepository;
 import kz.medical.call.center.api.repository.auth.UserRepository;
@@ -17,8 +18,8 @@ import static io.micronaut.core.util.StringUtils.isNotEmpty;
 public class AppealService implements PaginationService<Appeal, AppealPage> {
 
     private static final Logger log = LoggerFactory.getLogger(AppealService.class);
-    private AppealRepository appealRepository;
-    private UserRepository userRepository;
+    private final AppealRepository appealRepository;
+    private final UserRepository userRepository;
 
     public AppealService(AppealRepository appealRepository,
                          UserRepository userRepository
@@ -63,9 +64,9 @@ public class AppealService implements PaginationService<Appeal, AppealPage> {
             total = appealRepository.totalByParams(type, null, searchText, id);
             data = (ArrayList<Appeal>) appealRepository.pageByParams(type, null, limit, offset, searchText, id);
         }
-        var ownerIds = data.stream().map(row -> row.owner()).collect(Collectors.toUnmodifiableList());
+        var ownerIds = data.stream().map(Appeal::owner).toList();
         var owners = this.userRepository.findByIds(ownerIds);
-        var onwersMap = owners.stream().collect(Collectors.toMap(item -> item.id(), item -> item));
+        var onwersMap = owners.stream().collect(Collectors.toMap(MedicalCallCenterUser::id, item -> item));
         return new AppealPage(total, data, onwersMap);
     }
 

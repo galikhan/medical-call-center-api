@@ -26,8 +26,8 @@ public class RefreshTokenService implements RefreshTokenPersistence {
 
     private static final Logger log = LoggerFactory.getLogger(RefreshTokenService.class);
     private final AccessRefreshTokenGenerator tokenGenerator;
-    private RefreshTokenRepository refreshTokenRepository;
-    private UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     public RefreshTokenService(AccessRefreshTokenGenerator tokenGenerator, UserRepository userRepository, RefreshTokenRepository refreshTokenRepository) {
         this.tokenGenerator = tokenGenerator;

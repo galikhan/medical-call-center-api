@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public class AppealReportService {
 
     private static final Logger log = LoggerFactory.getLogger(AppealReportService.class);
-    private AppealRepository appealRepository;
+    private final AppealRepository appealRepository;
 
     public AppealReportService(AppealRepository appealRepository) {
         this.appealRepository = appealRepository;

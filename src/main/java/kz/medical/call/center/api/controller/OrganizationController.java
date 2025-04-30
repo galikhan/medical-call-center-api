@@ -19,8 +19,8 @@ import java.util.List;
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class OrganizationController {
 
-    private Logger log = LoggerFactory.getLogger(OrganizationController.class);
-    private OrganizationRepository organizationRepository;
+    private final Logger log = LoggerFactory.getLogger(OrganizationController.class);
+    private final OrganizationRepository organizationRepository;
 
     public OrganizationController(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;

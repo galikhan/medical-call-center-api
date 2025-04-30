@@ -6,19 +6,16 @@ import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import kz.medical.call.center.api.external.AsteriskApiService;
-import kz.medical.call.center.api.repository.AppealRepository;
 
 @CrossOrigin
 @Controller("/api/v1/fetch-asterisk-info")
 @Secured(SecurityRule.IS_ANONYMOUS)
 public class AsteriskApiController {
 
-    public AsteriskApiService asteriskServiceApi;
-    public AppealRepository appealRepository;
+    private final AsteriskApiService asteriskServiceApi;
 
-    public AsteriskApiController(AsteriskApiService asteriskServiceApi, AppealRepository appealRepository) {
+    public AsteriskApiController(AsteriskApiService asteriskServiceApi) {
         this.asteriskServiceApi = asteriskServiceApi;
-        this.appealRepository = appealRepository;
     }
 
     @Get

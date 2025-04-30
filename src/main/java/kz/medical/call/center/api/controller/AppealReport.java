@@ -18,7 +18,7 @@ import static io.micronaut.scheduling.TaskExecutors.BLOCKING;
 @ExecuteOn(BLOCKING)
 public class AppealReport {
 
-    private AppealReportService appealReportService;
+    private final AppealReportService appealReportService;
 
     public AppealReport(AppealReportService appealReportService) {
         this.appealReportService = appealReportService;

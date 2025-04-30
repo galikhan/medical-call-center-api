@@ -53,7 +53,7 @@ public class CallRecordingInfoService {
                             future.complete(result);
                         }
                     } else {
-                        log.warn("cannon find call recording by uniqueid {}", uniqueId);
+                        log.warn("cannot find call recording by uniqueid {}", uniqueId);
                     }
                 });
         return future.get();

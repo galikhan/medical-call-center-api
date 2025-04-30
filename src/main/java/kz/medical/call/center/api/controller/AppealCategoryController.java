@@ -13,7 +13,7 @@ import java.util.List;
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class AppealCategoryController {
 
-    private AppealCategoryRepository  appealCategoryRepository;
+    private final AppealCategoryRepository  appealCategoryRepository;
 
     public AppealCategoryController(AppealCategoryRepository appealCategoryRepository) {
         this.appealCategoryRepository = appealCategoryRepository;

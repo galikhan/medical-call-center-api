@@ -13,7 +13,7 @@ import java.util.List;
 @Secured(SecurityRule.IS_ANONYMOUS)
 public class RoleController {
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     public RoleController(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;

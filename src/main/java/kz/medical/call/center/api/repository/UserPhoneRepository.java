@@ -56,7 +56,7 @@ public class UserPhoneRepository {
                 .selectFrom(USER_PHONE)
                 .where(USER_PHONE.USER_.eq(userId))
                 .fetch().stream().map(UserPhone::to)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     public UserPhoneRecord findByUserAndPhone(Long userId, String phone) {
