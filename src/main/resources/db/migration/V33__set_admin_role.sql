@@ -1,0 +1,1 @@
+update medical_call_center_user set role_ = 'admin' where username_ = 'admin';

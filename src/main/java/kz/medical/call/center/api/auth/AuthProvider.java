@@ -22,10 +22,10 @@ import java.util.List;
 @Singleton
 public class AuthProvider<T, I, S> implements AuthenticationProvider<T, I, S> {
 
-    private Logger logger = LoggerFactory.getLogger(AuthProvider.class);
-    private UserRepository userRepository;
-    private RefreshTokenGenerator refreshTokenGenerator;
-    private AccessRefreshTokenGenerator accessRefreshTokenGenerator;
+    private final Logger logger = LoggerFactory.getLogger(AuthProvider.class);
+    private final UserRepository userRepository;
+    private final RefreshTokenGenerator refreshTokenGenerator;
+    private final AccessRefreshTokenGenerator accessRefreshTokenGenerator;
 
     public AuthProvider(UserRepository userRepository, RefreshTokenGenerator refreshTokenGenerator, AccessRefreshTokenGenerator accessRefreshTokenGenerator) {
         this.userRepository = userRepository;
@@ -39,9 +39,12 @@ public class AuthProvider<T, I, S> implements AuthenticationProvider<T, I, S> {
                                                         @NonNull AuthenticationRequest<I, S> authRequest) {
         var id = authRequest.getIdentity();
         var sec = authRequest.getSecret();
+        logger.info("creds {}, {}", id, sec);
+
 //        var password = PasswordUtil.hashString(sec.toString());
         var password = sec.toString();
         var userOptional = userRepository.findByUsernameAndPassword(id.toString(), password);
+        logger.info("user {}", userOptional);
         if (userOptional.isEmpty()) {
             throw AuthenticationResponse.exception();
         }

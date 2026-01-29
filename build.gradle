@@ -1,10 +1,11 @@
+
 plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.3.6"
     id("io.micronaut.aot") version "4.3.6"
     id("io.micronaut.test-resources") version "4.3.6"
-    id("nu.studer.jooq") version "8.2.1"
-    id("org.flywaydb.flyway") version "10.17.3"
+    id("nu.studer.jooq") version "10.2"
+    id("org.flywaydb.flyway") version "11.8.0"
 
 }
 
@@ -16,13 +17,14 @@ repositories {
 }
 
 dependencies {
+
+
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
     implementation("io.micronaut.flyway:micronaut-flyway")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.sql:micronaut-jooq")
-    implementation("org.flywaydb:flyway-database-postgresql")
     implementation("io.micronaut:micronaut-http-client")
 
     implementation("io.micronaut.security:micronaut-security-jwt")
@@ -36,10 +38,11 @@ dependencies {
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.yaml:snakeyaml")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
-//    runtimeOnly("org.eclipse.angus:angus-mail")
 
-    jooqGenerator 'org.postgresql:postgresql:42.5.2'
+    jooqGenerator("org.postgresql:postgresql:42.7.7")
+
     testImplementation("io.micronaut:micronaut-http-client")
 }
 
@@ -48,8 +51,8 @@ application {
     mainClass = "kz.medical.call.center.api.Application"
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("17")
-    targetCompatibility = JavaVersion.toVersion("17")
+    sourceCompatibility = JavaVersion.toVersion("21")
+    targetCompatibility = JavaVersion.toVersion("21")
 }
 
 
@@ -62,8 +65,8 @@ micronaut {
         annotations("kz.medical.call.center.api.*")
     }
     aot {
-    // Please review carefully the optimizations enabled below
-    // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
         optimizeServiceLoading = false
         convertYamlToJava = false
         precomputeOperations = true
@@ -75,9 +78,7 @@ micronaut {
     }
 }
 
-
-
-
+//
 configurations {
     flywayMigration
 }
@@ -87,6 +88,7 @@ flyway {
     url = 'jdbc:postgresql://localhost:5432/medical_call_center'
     user = 'postgres'
     password = 'postgres'
+    locations = ['classpath:db/migration']
 }
 
 jooq {

@@ -5,6 +5,8 @@ import jakarta.inject.Singleton;
 import kz.jooq.model.tables.records.AppealRecord;
 import kz.medical.call.center.api.record.Appeal;
 import kz.medical.call.center.api.record.report.AppealAmount;
+import kz.medical.call.center.api.record.report.AppealAmountByOperator;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -17,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static kz.jooq.model.tables.Appeal.APPEAL;
+import static kz.jooq.model.tables.MedicalCallCenterUser.MEDICAL_CALL_CENTER_USER;
 import static org.jooq.Records.mapping;
 import static org.jooq.impl.DSL.*;
 
@@ -109,7 +112,7 @@ public class AppealRepository {
 
     public Appeal findById(Long id) {
         var rec = findRecordById(id);
-        return rec.isPresent() ? Appeal.to(rec.get()) : Appeal.empty();
+        return rec.map(Appeal::to).orElseGet(Appeal::empty);
     }
 
 
@@ -117,13 +120,13 @@ public class AppealRepository {
         return this.dsl
                 .selectFrom(APPEAL)
                 .fetch().stream().map(Appeal::to)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     public int total() {
         return this.dsl
                 .selectCount().from(APPEAL)
-                .fetch().get(0).value1();
+                .fetch().getFirst().value1();
     }
 
     public List<Appeal> page(int limit, int offset) {
@@ -153,7 +156,7 @@ public class AppealRepository {
                 .from(APPEAL)
                 .where(APPEAL.TYPE_.eq(type))
                 .and(searchQuery)
-                .fetch().get(0).value1();
+                .fetch().getFirst().value1();
     }
 
 
@@ -235,5 +238,22 @@ public class AppealRepository {
                         item.get(2, Integer.class),
                         item.get(3, Integer.class)
                 ));
+    }
+
+    public List<AppealAmountByOperator> appealAmountByOperator(LocalDate start, LocalDate end) {
+        return this.dsl
+                .select(
+                        MEDICAL_CALL_CENTER_USER.USERNAME_,
+                        count(case_().when(APPEAL.TYPE_.eq("complaint"), 1).else_((Integer) null)),
+                        count(case_().when(APPEAL.TYPE_.eq("proposal"), 1).else_((Integer) null)),
+                        count(case_().when(APPEAL.TYPE_.eq("thanks"), 1).else_((Integer) null)),
+                        count()
+                )
+                .from(APPEAL).join(MEDICAL_CALL_CENTER_USER).on(APPEAL.OWNER_.eq(MEDICAL_CALL_CENTER_USER.ID_))
+                .where(
+                        DSL.cast(APPEAL.APPEAL_DATE_, LocalDate.class).between(start, end)
+                )
+                .groupBy(MEDICAL_CALL_CENTER_USER.USERNAME_)
+                .fetch().stream().map(AppealAmountByOperator::to).toList();
     }
 }

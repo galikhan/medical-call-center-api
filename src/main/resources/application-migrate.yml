@@ -1,0 +1,16 @@
+flyway:
+  enabled: true
+  datasources:
+    default:
+      enabled: true
+      baseline-on-migrate: true
+
+datasources:
+  default:
+    db-type: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/medical_call_center?preparedStatementCacheQueries=0
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    dialect: POSTGRES
