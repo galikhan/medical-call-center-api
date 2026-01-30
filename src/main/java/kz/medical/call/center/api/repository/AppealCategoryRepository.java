@@ -30,7 +30,7 @@ public class AppealCategoryRepository {
 
     public AppealCategory findById(Long id) {
         var rec = findRecordById(id);
-        return rec.isPresent() ? AppealCategory.to(rec.get()) : AppealCategory.empty();
+        return rec.map(AppealCategory::to).orElseGet(AppealCategory::empty);
     }
 
 
@@ -39,7 +39,7 @@ public class AppealCategoryRepository {
                 .selectFrom(APPEAL_CATEGORY)
                 .where(APPEAL_CATEGORY.IS_REMOVED_.eq(false))
                 .fetch().stream().map(AppealCategory::to)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     public List<AppealCategory> findByType(String type) {
@@ -48,6 +48,6 @@ public class AppealCategoryRepository {
                 .where(APPEAL_CATEGORY.IS_REMOVED_.eq(false))
                 .and(APPEAL_CATEGORY.TYPE_.eq(type))
                 .fetch().stream().map(AppealCategory::to)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 }
